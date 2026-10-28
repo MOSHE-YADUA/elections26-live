@@ -126,6 +126,15 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 .gauge .v{font-family:var(--f-num);font-size:40px;line-height:1.1}
 .gauge .s{font-size:14px;color:var(--muted)}
 
+.price{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--coal);border-radius:12px;padding:18px 20px;display:grid;gap:4px;min-width:0}
+.price.past{border-top-color:var(--muted)}
+.price .t{font-size:14px;font-weight:700;color:var(--muted)}
+.price .v{font-family:var(--f-num);font-size:40px;line-height:1.1}
+.price .v small{font-family:var(--f-body);font-size:15px;color:var(--muted);margin-inline-start:8px}
+.price.past .v{color:var(--muted)}
+.price .s{font-size:13px;color:var(--muted)}
+.price-note{grid-column:1/-1;margin:0;font-size:14px;color:var(--muted)}
+
 /* ---------- טבלה מלאה ---------- */
 .explore{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
 .explore>*{min-width:0}
@@ -252,6 +261,8 @@ footer a{color:inherit}
   <section>
     <div class="sec-head"><h2>אחוזי הצבעה</h2></div>
     <div class="turn" id="turn" style="margin-top:16px"></div>
+    <h3 class="sub-h">מחיר מנדט</h3>
+    <div class="turn" id="seatPrice" style="margin-top:10px"></div>
   </section>
 
   <section class="explore" id="explore">
@@ -532,6 +543,19 @@ function render(r){
       <div class="s">${t26?deltaPct(t26-t22):""} · ${fmt(voters)} מצביעים נספרו מתוך ${fmt(bzb)} בעלי זכות</div></div></div>
     <div class="gauge">${ring(t22,"var(--muted)",true)}<div><div class="t">כנסת 25</div><div class="v num">${p1(t22)}</div>
       <div class="s">${fmt(Y22.voters)} מצביעים מתוך ${fmt(Y22.bzb)} בעלי זכות</div></div></div>`;
+
+  // מחיר מנדט = קולות הרשימות שעברו את אחוז החסימה חלקי 120
+  const passed26=sum(v26,Object.keys(s26)), passed25=sum(Y22.votes,Object.keys(Y22.seats));
+  const price26=passed26/120, price25=passed25/120, dp=Math.round(price26-price25);
+  const priceCard=(k,price,passed,valid,past)=>`<div class="price${past?" past":""}">
+      <div class="t">${k}</div>
+      <div class="v num">${fmt(Math.round(price))}<small>קולות למנדט</small></div>
+      <div class="s num">${fmt(passed)} קולות לרשימות שעברו את אחוז החסימה ÷ 120</div>
+      <div class="s num">אחוז החסימה (3.25%): ${fmt(Math.ceil(valid*0.0325))} קולות</div>
+    </div>`;
+  document.getElementById("seatPrice").innerHTML=
+    priceCard("כנסת 26",price26,passed26,valid)+priceCard("כנסת 25",price25,passed25,Y22.valid,true)+
+    `<p class="price-note">מנדט בכנסת 26 עולה עד עכשיו <span class="gap ${dp>0?"up":dp<0?"down":"zero"}"><bdi dir="ltr">${dp>0?"+":dp<0?"−":""}${fmt(Math.abs(dp))}</bdi></span> קולות לעומת כנסת 25. המספר של כנסת 26 עוד יעלה עד סוף הספירה.</p>`;
 
   // טבלה
   // פער בסימן מפורש; כיוון LTR כדי שהסימן יופיע לפני המספר
