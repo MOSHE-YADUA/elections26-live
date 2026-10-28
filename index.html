@@ -127,7 +127,8 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 .gauge .s{font-size:14px;color:var(--muted)}
 
 /* ---------- טבלה מלאה ---------- */
-.explore{display:grid;gap:18px}
+.explore{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.explore>*{min-width:0}
 .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:0 8px 20px -14px rgba(11,22,51,.5)}
 .tabs button{font:inherit;font-family:var(--f-num);font-size:17px;padding:11px 8px;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
 .tabs button:hover{color:var(--ink);background:color-mix(in srgb,var(--line) 50%,transparent)}
@@ -165,6 +166,12 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 .finder input:focus-visible,.finder select:focus-visible,.finder button:focus-visible{outline:2px solid var(--coal);outline-offset:1px}
 .finder button{font:inherit;font-weight:700;padding:10px 18px;border-radius:8px;border:0;background:var(--coal);color:#fff;cursor:pointer}
 .finder .or{color:var(--muted);font-weight:700;padding-bottom:10px}
+.city-bar{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 16px;margin-top:26px}
+.city-bar .sub-h{margin:0}
+.sorter{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.sorter label{font-size:13px;font-weight:700;color:var(--muted)}
+.sorter select{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);max-width:100%}
+.sorter select:focus-visible{outline:2px solid var(--coal);outline-offset:1px}
 .sub-h{font-family:var(--f-num);font-weight:400;font-size:20px;margin:26px 0 4px}
 .place{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:16px;overflow:hidden}
 .place-head{padding:16px 20px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line)}
@@ -180,7 +187,7 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 .mb .vv{font-size:13px;color:var(--muted)}
 .place .tbl-wrap{padding-top:12px}
 .tbl-wrap.flat{padding:0;background:var(--surface);border:1px solid var(--line);border-radius:12px}
-.tbl-wrap.flat table{min-width:820px}
+.tbl-wrap.flat table{min-width:1040px}
 .citybtn{font:inherit;font-weight:700;color:var(--coal);background:none;border:0;padding:0;cursor:pointer;text-align:start}
 .citybtn:hover{text-decoration:underline}
 .empty{padding:18px 20px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:12px;margin-top:16px}
@@ -279,8 +286,23 @@ footer a{color:inherit}
       <input id="cityInput" list="townList" placeholder="הקלידו שם יישוב, למשל ירושלים" autocomplete="off">
     </div>
     <div id="cityDetail"></div>
-    <h3 class="sub-h">הערים הגדולות</h3>
-    <p class="tbl-note" style="margin:0 0 8px">אחוז מהקולות הכשרים בכל עיר. לחיצה על עיר פותחת את הפירוט שלה.</p>
+    <div class="city-bar">
+      <h3 class="sub-h" id="cityCount">הערים</h3>
+      <div class="sorter">
+        <label for="citySort">סידור לפי</label>
+        <select id="citySort">
+          <option value="size">גודל העיר (בעלי זכות בחירה)</option>
+          <option value="t26">אחוז הצבעה בכנסת 26</option>
+          <option value="t25">אחוז הצבעה בכנסת 25</option>
+          <option value="tgap">שינוי באחוז ההצבעה</option>
+        </select>
+        <select id="cityDir" aria-label="כיוון הסידור">
+          <option value="desc">מהגבוה לנמוך</option>
+          <option value="asc">מהנמוך לגבוה</option>
+        </select>
+      </div>
+    </div>
+    <p class="tbl-note" style="margin:0 0 8px">כל הערים עם 15,000 בעלי זכות בחירה ומעלה. אחוז ההצבעה בכנסת 26 הוא לפי דיווח הוועדה. לחיצה על עיר פותחת את הפירוט שלה.</p>
     <div class="tbl-wrap flat" id="cityTable"></div>
   </div>
 
@@ -559,7 +581,7 @@ function fromMirror(r){
   const totalKalpi=Object.values(r.progress&&r.progress.towns||{}).reduce((s,t)=>s+t[1],0);
   return {time:new Date(r.updated), sourceName:"election-il-2026", bzb, voters, valid, votes,
     counted_pct:r.counted_pct, votes_pct:r.votes_pct, turnout:r.turnout&&r.turnout.pct, totalKalpi,
-    towns:{parties:r.parties, data:r.towns||{}, progress:(r.progress&&r.progress.towns)||{}}};
+    towns:{parties:r.parties, data:r.towns||{}, progress:(r.progress&&r.progress.towns)||{}, live:r.live_towns||{}}};
 }
 function fromGovmap(g){
   return {time:new Date(g.generated), sourceName:"GovMap", bzb:g.bzb, voters:g.voters, valid:g.valid,
@@ -693,21 +715,31 @@ function renderCityDetail(){
 
 function renderCityTable(){
   if(!T25||!TOWNS26) return;
-  const codes=Object.keys(T25).filter(c=>TOWNS26.data[c]).sort((x,y)=>T25[y][1]-T25[x][1]).slice(0,30);
+  // אחוז הצבעה בכנסת 26: דיווח הוועדה ליישוב, ואם אין, מהקלפיות שנספרו
+  const t26=c=>{const l=TOWNS26.live[c]; if(l&&l[0]) return l[0]; const a=town26(c); return a?pct(a.voters,a.bzb):0;};
+  const t25=c=>pct(T25[c][2],T25[c][1]);
+  const key={size:c=>T25[c][1], t26, t25, tgap:c=>t26(c)-t25(c)}[document.getElementById("citySort").value];
+  const dir=document.getElementById("cityDir").value==="asc"?1:-1;
+  const codes=Object.keys(T25).filter(c=>TOWNS26.data[c]&&T25[c][1]>=15000).sort((x,y)=>dir*(key(x)-key(y)));
+  document.getElementById("cityCount").textContent=`הערים (${codes.length})`;
   const cell=(p26,p25)=>`<td class="gs v26 num">${p1(p26)}</td><td class="v25 num">${p1(p25)}</td><td class="num">${deltaPct(p26-p25)}</td>`;
-  let html=`<table><thead><tr><th rowspan="2" class="name">עיר</th><th class="grp gs" colspan="3">קולות כשרים</th>
+  let html=`<table><thead><tr><th rowspan="2" class="name">עיר</th><th class="grp gs" colspan="3">אחוז הצבעה</th><th class="grp gs" colspan="3">קולות כשרים</th>
     <th class="grp gs" colspan="3">קואליציה</th><th class="grp gs" colspan="3">אופוזיציה</th><th class="grp gs" colspan="3">מפלגות ערביות</th></tr><tr>
-    <th class="gs">כנסת 26</th><th>כנסת 25</th><th>פער</th>${"<th class=\"gs\">כנסת 26</th><th>כנסת 25</th><th>פער</th>".repeat(3)}</tr></thead><tbody>`;
+    <th class="gs">כנסת 26</th><th>כנסת 25</th><th>פער</th>${"<th class=\"gs\">כנסת 26</th><th>כנסת 25</th><th>פער</th>".repeat(4)}</tr></thead><tbody>`;
   for(const c of codes){
     const a=town26(c), b=T25[c], b26=blocTotals(a.v), b25=blocTotals25(b[5]);
     const d=a.valid-b[4];
     html+=`<tr><td class="name"><button class="citybtn" type="button" data-code="${c}">${townName(c)}</button></td>
+      ${cell(t26(c),t25(c))}
       <td class="gs v26 num">${fmt(a.valid)}</td><td class="v25 num">${fmt(b[4])}</td>
       <td class="num"><span class="gap ${d>0?"up":d<0?"down":"zero"}"><bdi dir="ltr">${d>0?"+":d<0?"−":""}${fmt(Math.abs(d))}</bdi></span></td>
       ${cell(pct(b26.coal,a.valid),pct(b25.coal,b[4]))}${cell(pct(b26.opp,a.valid),pct(b25.opp,b[4]))}${cell(pct(b26.arab,a.valid),pct(b25.arab,b[4]))}</tr>`;
   }
   document.getElementById("cityTable").innerHTML=html+"</tbody></table>";
 }
+
+document.getElementById("citySort").addEventListener("change",renderCityTable);
+document.getElementById("cityDir").addEventListener("change",renderCityTable);
 
 function renderCities(){ if(T25){ fillTownList(); renderCityTable(); renderCityDetail(); } }
 
