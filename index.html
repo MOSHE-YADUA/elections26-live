@@ -27,6 +27,7 @@
   color-scheme:dark;
 }}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
 .inner{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .num{font-variant-numeric:tabular-nums}
@@ -131,12 +132,21 @@ summary::after{content:"+";font-size:22px;line-height:1}
 details[open] summary::after{content:"−"}
 summary:focus-visible{outline:2px solid var(--coal);outline-offset:2px;border-radius:12px}
 .tbl-wrap{overflow-x:auto;padding:0 20px 18px}
-.tbl-wrap table{border-collapse:collapse;width:100%;min-width:680px;font-size:14px}
-.tbl-wrap th,.tbl-wrap td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:start}
-.tbl-wrap th{font-size:12px;color:var(--muted)}
-td.n,th.n{text-align:end}
-th.grp{text-align:center;border-bottom:2px solid var(--ink);font-family:var(--f-num);font-size:14px;color:var(--ink)}
-tr.tot td{font-weight:800}
+.tbl-wrap table{border-collapse:separate;border-spacing:0;width:100%;min-width:900px;font-size:14px}
+.tbl-wrap th,.tbl-wrap td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:end;white-space:nowrap;background:var(--surface)}
+.tbl-wrap th{font-size:12px;color:var(--muted);font-weight:700}
+.tbl-wrap .name{text-align:start;position:sticky;right:0;z-index:1;font-weight:700;white-space:normal;min-width:150px;box-shadow:-1px 0 0 var(--line)}
+.tbl-wrap .gs{border-inline-start:2px solid var(--line)}
+.tbl-wrap th.grp{text-align:center;font-family:var(--f-num);font-size:16px;font-weight:400;color:var(--ink);border-bottom:2px solid var(--ink)}
+.tbl-wrap td.v26{font-weight:700;color:var(--ink)}
+.tbl-wrap td.v25{color:var(--muted)}
+.gap{font-family:var(--f-num);font-weight:400}
+.gap.up{color:var(--up)} .gap.down{color:var(--down)} .gap.zero{color:var(--muted)}
+.tbl-wrap tr.bloc td{background:color-mix(in srgb,var(--c) 10%,var(--surface));border-bottom:2px solid var(--c);font-family:var(--f-num);font-size:16px;color:var(--c);text-align:start}
+.tbl-wrap tr.tot td{font-weight:800;background:color-mix(in srgb,var(--c) 5%,var(--surface))}
+.tbl-wrap tr.tot td.name{color:var(--c)}
+.tbl-wrap tr.grand td{border-top:2px solid var(--ink);border-bottom:none;font-weight:800}
+.tbl-note{font-size:13px;color:var(--muted);margin:0 20px 12px}
 
 footer{color:var(--muted);font-size:13px;line-height:1.75;display:grid;gap:4px}
 footer a{color:inherit}
@@ -165,6 +175,7 @@ footer a{color:inherit}
       <div class="chips">
         <span class="chip" id="live"><span class="dot"></span><span id="liveTxt">טוען נתונים…</span></span>
         <span class="chip num" id="counted">—</span>
+        <span class="chip num" id="viewers" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg><span id="viewersTxt"></span></span>
       </div>
     </div>
     <div class="count-bar" title="אחוז הקלפיות שנספרו"><i id="bar"></i></div>
@@ -197,13 +208,14 @@ footer a{color:inherit}
     <div class="turn" id="turn" style="margin-top:16px"></div>
   </section>
 
-  <details>
-    <summary>כל המספרים בטבלה</summary>
+  <details open>
+    <summary>כל המספרים: כנסת 26 מול כנסת 25</summary>
+    <p class="tbl-note">בכל מדד: כנסת 26, כנסת 25, והפער ביניהן. הקולות של כנסת 26 הם מהקלפיות שנספרו עד עכשיו, ולכן הפער בקולות עוד יגדל עם סיום הספירה.</p>
     <div class="tbl-wrap">
       <table>
         <thead>
-          <tr><th rowspan="2">רשימה</th><th class="grp" colspan="3">כנסת 26 (בספירה)</th><th class="grp" colspan="3">כנסת 25 (סופי)</th><th rowspan="2" class="n">שינוי</th></tr>
-          <tr><th class="n">קולות</th><th class="n">אחוז</th><th class="n">מנדטים</th><th class="n">קולות</th><th class="n">אחוז</th><th class="n">מנדטים</th></tr>
+          <tr><th rowspan="2" class="name">רשימה</th><th class="grp gs" colspan="3">קולות</th><th class="grp gs" colspan="3">אחוז מהקולות</th><th class="grp gs" colspan="3">מנדטים</th></tr>
+          <tr><th class="gs">כנסת 26</th><th>כנסת 25</th><th>פער</th><th class="gs">כנסת 26</th><th>כנסת 25</th><th>פער</th><th class="gs">כנסת 26</th><th>כנסת 25</th><th>פער</th></tr>
         </thead>
         <tbody id="tbody"></tbody>
       </table>
@@ -222,6 +234,7 @@ const FEED_GOVMAP = "data/live.json";  // עותק של GovMap, מתעדכן י�
 const FEED_PROXY = "https://mosheyadua.cu.ma/elections26/govmap.php";  // GovMap דרך השרת; כרגע GovMap חוסם אותו
 const FEED_MIRROR = "https://navonyaniv.github.io/election-il-2026/results.json";
 const REFRESH_MS = 60000;
+const PRESENCE = "https://mosheyadua.cu.ma/elections26/presence.php";  // מונה צופים, ראו server/presence.php
 
 // שמות הרשימות של כנסת 26 (לפי אותיות הפתק)
 const NAMES26 = {"מחל":"הליכוד","רק":"ביחד – בנט","דרך":"ישר! – איזנקוט","אמת":"הדמוקרטים","ל":"ישראל ביתנו","שס":"ש\"ס","ג":"יהדות התורה","ב":"עוצמה יהודית","ט":"הציונות הדתית","כן":"כחול לבן","עם":"רע\"ם","ודם":"הרשימה המשותפת","ד":"השותפות לכולם","די":"המילואימניקים","ני":"נעם"};
@@ -391,22 +404,28 @@ function render(r){
       <div class="s">${fmt(Y22.voters)} מצביעים מתוך ${fmt(Y22.bzb)} בעלי זכות</div></div></div>`;
 
   // טבלה
+  // פער בסימן מפורש; כיוון LTR כדי שהסימן יופיע לפני המספר
+  const gap=(d,f,eps=0)=>{const cls=d>eps?"up":d<-eps?"down":"zero";
+    return `<span class="gap ${cls}"><bdi dir="ltr">${d>eps?"+":d<-eps?"−":""}${f(Math.abs(d))}</bdi></span>`;};
+  const line=(cls,name,a)=>`<tr class="${cls}"${a.c?` style="--c:${a.c}"`:""}><td class="name">${name}</td>
+    <td class="gs v26 num">${fmt(a.v26)}</td><td class="v25 num">${fmt(a.v22)}</td><td class="num">${gap(a.v26-a.v22,fmt)}</td>
+    <td class="gs v26 num">${p1(a.p26)}</td><td class="v25 num">${p1(a.p22)}</td><td class="num">${gap(a.p26-a.p22,x=>x.toFixed(1),0.05)}</td>
+    <td class="gs v26 num">${a.s26}</td><td class="v25 num">${a.s22}</td><td class="num">${gap(a.s26-a.s22,x=>x)}</td></tr>`;
   let html="";
   for(const b of ["coal","opp","arab"]){
+    const B=BLOCS[b];
+    html+=`<tr class="bloc" style="--c:${B.c}"><td colspan="10">${B.name}</td></tr>`;
     for(const row of ROWS.filter(x=>x.bloc===b)){
-      const sv26=sum(v26,row.y26), sv22=sum(Y22.votes,row.y22), ss26=sum(s26,row.y26), ss22=sum(Y22.seats,row.y22);
-      html+=`<tr><td>${row.label||NAMES26[row.y26[0]]}</td><td class="n num">${fmt(sv26)}</td><td class="n num">${p1(pct(sv26,valid))}</td><td class="n num">${ss26}</td>
-        <td class="n num">${fmt(sv22)}</td><td class="n num">${p1(pct(sv22,Y22.valid))}</td><td class="n num">${ss22}</td><td class="n">${delta(ss26-ss22)}</td></tr>`;
+      const v=sum(v26,row.y26), w=sum(Y22.votes,row.y22);
+      html+=line("",row.label||NAMES26[row.y26[0]],{v26:v,v22:w,p26:pct(v,valid),p22:pct(w,Y22.valid),s26:sum(s26,row.y26),s22:sum(Y22.seats,row.y22)});
     }
-    {const t=T[b];
-      html+=`<tr class="tot"><td>סך הכול ${BLOCS[b].name}</td><td class="n num">${fmt(t.v26)}</td><td class="n num">${p1(t.p26)}</td><td class="n num">${t.s26}</td>
-        <td class="n num">${fmt(t.v22)}</td><td class="n num">${p1(t.p22)}</td><td class="n num">${t.s22}</td><td class="n">${delta(t.s26-t.s22)}</td></tr>`;}
+    html+=line("tot",`סך הכול ${B.name}`,{...T[b],c:B.c});
   }
   const known26=new Set(ROWS.flatMap(x=>x.y26)), known22=new Set(ROWS.flatMap(x=>x.y22));
   const o26=Object.keys(v26).filter(k=>!known26.has(k)).reduce((s,k)=>s+v26[k],0);
   const o22=Y22.valid-Object.keys(Y22.votes).filter(k=>known22.has(k)).reduce((s,k)=>s+Y22.votes[k],0);
-  html+=`<tr><td>שאר הרשימות (מתחת לאחוז החסימה)</td><td class="n num">${fmt(o26)}</td><td class="n num">${p1(pct(o26,valid))}</td><td class="n num">0</td>
-    <td class="n num">${fmt(o22)}</td><td class="n num">${p1(pct(o22,Y22.valid))}</td><td class="n num">0</td><td></td></tr>`;
+  html+=line("","שאר הרשימות<br><small style=\"font-weight:400;color:var(--muted)\">מתחת לאחוז החסימה</small>",{v26:o26,v22:o22,p26:pct(o26,valid),p22:pct(o22,Y22.valid),s26:0,s22:0});
+  html+=line("grand","סך הכול הקולות הכשרים",{v26:valid,v22:Y22.valid,p26:100,p22:100,s26:120,s22:120});
   document.getElementById("tbody").innerHTML=html;
 
   document.getElementById("foot").textContent=`הנתונים המוצגים: ${r.sourceName}, עודכנו בשעה ${r.label}. הדף בודק אם יש עדכון כל דקה.`;
@@ -461,6 +480,23 @@ function setLive(ok,text){
 
 load();
 setInterval(load,REFRESH_MS);
+
+// צופים עכשיו: מזהה אקראי לכל דפדפן, דיווח כל 30 שניות כשהלשונית גלויה
+let viewerId;
+try{ viewerId=localStorage.getItem("viewerId"); if(!viewerId){ viewerId=crypto.randomUUID(); localStorage.setItem("viewerId",viewerId); } }
+catch(e){ viewerId=crypto.randomUUID(); }
+async function ping(){
+  if(document.hidden) return;
+  try{
+    const r=await (await fetch(PRESENCE+"?id="+viewerId,{cache:"no-store"})).json();
+    if(typeof r.online!=="number") return;
+    document.getElementById("viewersTxt").textContent=r.online===1?"צופה אחד עכשיו":`${fmt(r.online)} צופים עכשיו`;
+    document.getElementById("viewers").hidden=false;
+  }catch(e){}
+}
+ping();
+setInterval(ping,30000);
+document.addEventListener("visibilitychange",ping);
 </script>
 </body>
 </html>
