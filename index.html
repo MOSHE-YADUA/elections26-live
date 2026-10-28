@@ -126,11 +126,15 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 .gauge .s{font-size:14px;color:var(--muted)}
 
 /* ---------- טבלה מלאה ---------- */
-details{background:var(--surface);border:1px solid var(--line);border-radius:12px}
-summary{cursor:pointer;padding:16px 20px;font-family:var(--f-num);font-size:17px;list-style:none;display:flex;justify-content:space-between}
-summary::after{content:"+";font-size:22px;line-height:1}
-details[open] summary::after{content:"−"}
-summary:focus-visible{outline:2px solid var(--coal);outline-offset:2px;border-radius:12px}
+.explore{display:grid;gap:18px}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:0 8px 20px -14px rgba(11,22,51,.5)}
+.tabs button{font:inherit;font-family:var(--f-num);font-size:17px;padding:11px 8px;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
+.tabs button:hover{color:var(--ink);background:color-mix(in srgb,var(--line) 50%,transparent)}
+.tabs button[aria-selected="true"]{background:var(--night);color:#fff}
+.tabs button:focus-visible{outline:2px solid var(--coal);outline-offset:2px}
+.panel-box{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.panel-title{font-family:var(--f-num);font-weight:400;font-size:20px;padding:16px 20px 6px}
+@media (max-width:520px){.tabs button{font-size:15px;padding:10px 4px}}
 .tbl-wrap{overflow-x:auto;padding:0 20px 18px}
 .tbl-wrap table{border-collapse:separate;border-spacing:0;width:100%;min-width:900px;font-size:14px}
 .tbl-wrap th,.tbl-wrap td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:end;white-space:nowrap;background:var(--surface)}
@@ -238,8 +242,15 @@ footer a{color:inherit}
     <div class="turn" id="turn" style="margin-top:16px"></div>
   </section>
 
-  <details open>
-    <summary>כל המספרים: כנסת 26 מול כנסת 25</summary>
+  <section class="explore" id="explore">
+  <div class="tabs" role="tablist" aria-label="תצוגת השוואה">
+    <button type="button" role="tab" id="tab-all" data-tab="all" aria-controls="all" aria-selected="true">כל המספרים</button>
+    <button type="button" role="tab" id="tab-cities" data-tab="cities" aria-controls="cities" aria-selected="false">עיר מול עיר</button>
+    <button type="button" role="tab" id="tab-kalpi" data-tab="kalpi" aria-controls="kalpi" aria-selected="false">קלפי מול קלפי</button>
+  </div>
+
+  <div class="panel-box" role="tabpanel" id="all" aria-labelledby="tab-all">
+    <h2 class="panel-title">כל המספרים: כנסת 26 מול כנסת 25</h2>
     <p class="tbl-note">בכל מדד: כנסת 26, כנסת 25, והפער ביניהן. הקולות של כנסת 26 הם מהקלפיות שנספרו עד עכשיו, ולכן הפער בקולות עוד יגדל עם סיום הספירה.</p>
     <div class="tbl-wrap">
       <table>
@@ -250,9 +261,9 @@ footer a{color:inherit}
         <tbody id="tbody"></tbody>
       </table>
     </div>
-  </details>
+  </div>
 
-  <section id="cities">
+  <div role="tabpanel" id="cities" aria-labelledby="tab-cities" hidden>
     <div class="sec-head">
       <h2>עיר מול עיר</h2>
       <div class="key"><span>כנסת 26 מול כנסת 25, לפי יישוב · מתעדכן אוטומטית</span></div>
@@ -265,9 +276,9 @@ footer a{color:inherit}
     <h3 class="sub-h">הערים הגדולות</h3>
     <p class="tbl-note" style="margin:0 0 8px">אחוז מהקולות הכשרים בכל עיר. לחיצה על עיר פותחת את הפירוט שלה.</p>
     <div class="tbl-wrap flat" id="cityTable"></div>
-  </section>
+  </div>
 
-  <section id="kalpi">
+  <div role="tabpanel" id="kalpi" aria-labelledby="tab-kalpi" hidden>
     <div class="sec-head">
       <h2>קלפי מול קלפי</h2>
       <div class="key" id="k26status">בודק אם הועלה קובץ קלפיות של כנסת 26…</div>
@@ -281,6 +292,7 @@ footer a{color:inherit}
     </div>
     <p class="tbl-note" style="margin:8px 0 0">ההשוואה לכנסת 25 היא לקלפי עם אותו מספר באותו יישוב. מספור הקלפיות משתנה לפעמים בין בחירות, ולכן ההתאמה לא תמיד מדויקת.</p>
     <div id="kalpiDetail"></div>
+  </div>
   </section>
   <datalist id="townList"></datalist>
 
@@ -300,11 +312,15 @@ const PRESENCE = "https://mosheyadua.cu.ma/elections26/presence.php";  // מונ
 
 // שמות הרשימות של כנסת 26 (לפי אותיות הפתק)
 const NAMES26 = {"מחל":"הליכוד","רק":"ביחד – בנט","דרך":"ישר! – איזנקוט","אמת":"הדמוקרטים","ל":"ישראל ביתנו","שס":"ש\"ס","ג":"יהדות התורה","ב":"עוצמה יהודית","ט":"הציונות הדתית–זהות","כן":"כחול לבן","עם":"רע\"ם","ודם":"הרשימה המשותפת","ד":"השותפות לכולם","די":"המילואימניקים","ני":"נעם"};
+// כל הרשימות של כנסת 26 (לפי GovMap), לשמות ב"שאר הרשימות"
+const ALL26 = {"מחל":"הליכוד","רק":"ביחד – בנט","דרך":"ישר! – איזנקוט","אמת":"הדמוקרטים","ל":"ישראל ביתנו","שס":"ש\"ס","ג":"יהדות התורה","ב":"עוצמה יהודית","ט":"הציונות הדתית–זהות","כן":"כחול לבן","עם":"רע\"ם","ודם":"הרשימה המשותפת","ד":"השותפות לכולם","די":"המילואימניקים","צדק":"שרשרת לאהבה ואחדות העם","צף":"הפיראטים","ך":"עמך ישראל","י":"ישראל תחילה","ה":"גן עדן","קה":"קול הנשים","בד":"ביחד נצליח","קץ":"משפט צדק","נף":"שמע","קך":"סדר חדש","זך":"הציבור החרדי","פה":"אני ואתה","זץ":"ברית עולם","נקי":"התיקון לשיטת הבחירות","יק":"הגוש התנ\"כי","ז":"בטח","בקר":"אורות השחר","נץ":"ביטחון אישי","נר":"צבע שחור","צבי":"תנועת אחי","בי":"צומת בית ישראל","ק":"תקומה","רץ":"הקהל","ני":"נעם"};
+// הרשימות הקטנות של כנסת 25
+const OTHER25 = {"ב":"הבית היהודי","אצ":"חופש כלכלי","יז":"הכלכלית החדשה","קץ":"באומץ בשבילך","צ":"צעירים בוערים","ף":"הפיראטים","ק":"קול הסביבה והחי","ני":"נתיב","נק":"יש כיוון","קנ":"כל קול קובע","ז":"שחר","י":"ישראל חופשית דמוקרטית","ץ":"מנהיגות חברתית","רז":"רשימת שלושים/ארבעים","נץ":"העצמאים החדשים","ך":"אני ואתה","קך":"סדר חדש"};
 const SURPLUS26 = [["רק","ל"],["דרך","אמת"],["מחל","ט"],["עם","ודם"],["שס","ג"]];
 
 // כנסת 25 — סכום כל הקלפיות מהקובץ הרשמי; מנדטים רשמיים
 const Y22 = {bzb:6788804, voters:4794593, valid:4764742,
-  votes:{"מחל":1115336,"פה":847435,"ט":516470,"כן":432482,"שס":392964,"ג":280194,"ל":213687,"עם":194047,"ום":178735,"אמת":175992,"מרצ":150793,"ד":138617,"ב":56775},
+  votes:{"מחל":1115336,"פה":847435,"ט":516470,"כן":432482,"שס":392964,"ג":280194,"ל":213687,"עם":194047,"ום":178735,"אמת":175992,"מרצ":150793,"ד":138617,"ב":56775,"אצ":15801,"קץ":14694,"יז":13920,"צ":8800},
   seats:{"מחל":32,"פה":24,"ט":14,"כן":12,"שס":11,"ג":7,"ל":6,"עם":5,"ום":5,"אמת":4}};
 const NAMES22 = {"מחל":"הליכוד","פה":"יש עתיד","ט":"הציונות הדתית","כן":"המחנה הממלכתי","שס":"ש\"ס","ג":"יהדות התורה","ל":"ישראל ביתנו","עם":"רע\"ם","ום":"חד\"ש–תע\"ל","אמת":"העבודה","מרצ":"מרצ","ד":"בל\"ד","ב":"הבית היהודי"};
 
@@ -359,7 +375,7 @@ function delta(d,unit=""){
 function deltaPct(d){
   const cls=d>0.05?"up":d<-0.05?"down":"zero";
   const s=(d>0.05?"▲ ":d<-0.05?"▼ ":"")+Math.abs(d).toFixed(1);
-  return `<span class="delta ${cls}">${s} נק'</span>`;
+  return `<span class="delta ${cls}">${s}%</span>`;
 }
 
 // מליאה: 120 מושבים בחצי עיגול; זווית 0 בצד ימין, כך שהקואליציה יושבת מימין
@@ -385,6 +401,16 @@ function chamber(svg, counts, opts){
 }
 
 let state=null;
+
+// "שאר הרשימות": שלוש הגדולות מכל כנסת, בשמן
+function othersNote(v26,v25){
+  const k26=new Set(ROWS.flatMap(x=>x.y26)), k25=new Set(ROWS.flatMap(x=>x.y22));
+  const top=(v,known,names)=>Object.entries(v||{}).filter(([k,n])=>!known.has(k)&&n>0).sort((a,b)=>b[1]-a[1]).slice(0,3)
+    .map(([k,n])=>`${names[k]||k} (${fmt(n)})`).join(", ");
+  const a=v26?top(v26,k26,ALL26):"", b=v25?top(v25,k25,OTHER25):"";
+  return [a?"כנסת 26: "+a:"", b?"כנסת 25: "+b:""].filter(Boolean).join("<br>");
+}
+const othersLabel=(v26,v25)=>{const n=othersNote(v26,v25);return "שאר הרשימות"+(n?`<small class="tsub">${n}</small>`:"");};
 
 function render(r){
   const {bzb,voters,valid}=r, v26=r.votes;
@@ -487,7 +513,7 @@ function render(r){
   const known26=new Set(ROWS.flatMap(x=>x.y26)), known22=new Set(ROWS.flatMap(x=>x.y22));
   const o26=Object.keys(v26).filter(k=>!known26.has(k)).reduce((s,k)=>s+v26[k],0);
   const o22=Y22.valid-Object.keys(Y22.votes).filter(k=>known22.has(k)).reduce((s,k)=>s+Y22.votes[k],0);
-  html+=line("","שאר הרשימות<br><small style=\"font-weight:400;color:var(--muted)\">מתחת לאחוז החסימה</small>",{v26:o26,v22:o22,p26:pct(o26,valid),p22:pct(o22,Y22.valid),s26:0,s22:0});
+  html+=line("",othersLabel(v26,Y22.votes),{v26:o26,v22:o22,p26:pct(o26,valid),p22:pct(o22,Y22.valid),s26:0,s22:0});
   html+=line("grand","סך הכול הקולות הכשרים",{v26:valid,v22:Y22.valid,p26:100,p22:100,s26:120,s22:120});
   document.getElementById("tbody").innerHTML=html;
 
@@ -604,7 +630,7 @@ function cmpTable(v26,valid26,v25,valid25){
   const o={v26:has26?Object.keys(v26).filter(k=>!k26.has(k)).reduce((s,k)=>s+v26[k],0):null,
            v25:has25?Object.keys(v25).filter(k=>!k25.has(k)).reduce((s,k)=>s+v25[k],0):null};
   o.p26=has26?pct(o.v26,valid26):null; o.p25=has25?pct(o.v25,valid25):null;
-  html+=line("","שאר הרשימות",o);
+  html+=line("",othersLabel(v26,v25),o);
   html+=line("grand","סך הכול הקולות הכשרים",{v26:has26?valid26:null,v25:has25?valid25:null,p26:has26?100:null,p25:has25?100:null});
   return `<div class="tbl-wrap"><table><thead>
     <tr><th rowspan="2" class="name">רשימה</th><th class="grp gs" colspan="3">קולות</th><th class="grp gs" colspan="3">אחוז מהקולות</th></tr>
@@ -721,6 +747,21 @@ document.getElementById("kTown").addEventListener("change",onKalpiTown);
 document.getElementById("kNum").addEventListener("change",e=>{ if(e.target.value) showKalpi(e.target.dataset.code,e.target.value); });
 document.getElementById("kBarzelGo").addEventListener("click",findBarzel);
 document.getElementById("kBarzel").addEventListener("keydown",e=>{ if(e.key==="Enter") findBarzel(); });
+
+function selectTab(name){
+  for(const b of document.querySelectorAll(".tabs [role=tab]")){
+    const on=b.dataset.tab===name; b.setAttribute("aria-selected",on); b.tabIndex=on?0:-1;
+    document.getElementById(b.dataset.tab).hidden=!on;
+  }
+}
+document.querySelector(".tabs").addEventListener("click",e=>{const b=e.target.closest("[role=tab]"); if(b){ selectTab(b.dataset.tab); history.replaceState(null,"","#"+b.dataset.tab); }});
+document.querySelector(".tabs").addEventListener("keydown",e=>{
+  if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight") return;
+  const tabs=[...document.querySelectorAll(".tabs [role=tab]")], i=tabs.indexOf(document.activeElement);
+  const n=tabs[(i+(e.key==="ArrowLeft"?1:-1)+tabs.length)%tabs.length]; n.focus(); n.click();
+});
+{ const h=location.hash.slice(1), q=new URLSearchParams(location.search);
+  if(q.get("kalpi")||h==="kalpi") selectTab("kalpi"); else if(q.get("city")||h==="cities") selectTab("cities"); }
 
 async function initPlaces(){
   try{ T25=await getJson("data/t25.json"); renderCities(); }catch(e){}
