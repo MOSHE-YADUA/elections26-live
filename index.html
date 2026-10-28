@@ -146,6 +146,36 @@ summary:focus-visible{outline:2px solid var(--coal);outline-offset:2px;border-ra
 .tbl-wrap tr.tot td{font-weight:800;background:color-mix(in srgb,var(--c) 5%,var(--surface))}
 .tbl-wrap tr.tot td.name{color:var(--c)}
 .tbl-wrap tr.grand td{border-top:2px solid var(--ink);border-bottom:none;font-weight:800}
+.tsub{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+/* ---------- ערים וקלפיות ---------- */
+.finder{margin-top:16px;min-width:0}
+.kalpi-finder{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end}
+.kalpi-finder>div{min-width:0}
+.finder label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.finder input,.finder select{font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);min-width:220px;max-width:100%}
+.finder input:focus-visible,.finder select:focus-visible,.finder button:focus-visible{outline:2px solid var(--coal);outline-offset:1px}
+.finder button{font:inherit;font-weight:700;padding:10px 18px;border-radius:8px;border:0;background:var(--coal);color:#fff;cursor:pointer}
+.finder .or{color:var(--muted);font-weight:700;padding-bottom:10px}
+.sub-h{font-family:var(--f-num);font-weight:400;font-size:20px;margin:26px 0 4px}
+.place{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:16px;overflow:hidden}
+.place-head{padding:16px 20px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line)}
+.place-head h3{font-family:var(--f-head);font-size:26px;font-weight:900}
+.place-head .meta{font-size:14px;color:var(--muted)}
+.mini-blocs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.mb{padding:14px 20px;border-inline-start:1px solid var(--line);display:grid;gap:4px;min-width:0}
+.mb:first-child{border-inline-start:0}
+.mb .t{font-weight:800;color:var(--c);display:flex;align-items:center;gap:8px}
+.mb .t::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c)}
+.mb .pp{font-family:var(--f-num);font-size:26px;line-height:1.1}
+.mb .pp small{font-family:var(--f-body);font-size:14px;color:var(--muted)}
+.mb .vv{font-size:13px;color:var(--muted)}
+.place .tbl-wrap{padding-top:12px}
+.tbl-wrap.flat{padding:0;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.tbl-wrap.flat table{min-width:820px}
+.citybtn{font:inherit;font-weight:700;color:var(--coal);background:none;border:0;padding:0;cursor:pointer;text-align:start}
+.citybtn:hover{text-decoration:underline}
+.empty{padding:18px 20px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:12px;margin-top:16px}
+@media (max-width:760px){.mini-blocs{grid-template-columns:1fr}.mb{border-inline-start:0;border-top:1px solid var(--line)}.mb:first-child{border-top:0}.finder input,.finder select{min-width:0;width:100%}.kalpi-finder>div{flex:1 1 100%}}
 .tbl-note{font-size:13px;color:var(--muted);margin:0 20px 12px}
 
 footer{color:var(--muted);font-size:13px;line-height:1.75;display:grid;gap:4px}
@@ -222,6 +252,38 @@ footer a{color:inherit}
     </div>
   </details>
 
+  <section id="cities">
+    <div class="sec-head">
+      <h2>עיר מול עיר</h2>
+      <div class="key"><span>כנסת 26 מול כנסת 25, לפי יישוב · מתעדכן אוטומטית</span></div>
+    </div>
+    <div class="finder">
+      <label for="cityInput">בחירת יישוב</label>
+      <input id="cityInput" list="townList" placeholder="הקלידו שם יישוב, למשל ירושלים" autocomplete="off">
+    </div>
+    <div id="cityDetail"></div>
+    <h3 class="sub-h">הערים הגדולות</h3>
+    <p class="tbl-note" style="margin:0 0 8px">אחוז מהקולות הכשרים בכל עיר. לחיצה על עיר פותחת את הפירוט שלה.</p>
+    <div class="tbl-wrap flat" id="cityTable"></div>
+  </section>
+
+  <section id="kalpi">
+    <div class="sec-head">
+      <h2>קלפי מול קלפי</h2>
+      <div class="key" id="k26status">בודק אם הועלה קובץ קלפיות של כנסת 26…</div>
+    </div>
+    <div class="finder kalpi-finder">
+      <div><label for="kTown">יישוב</label><input id="kTown" list="townList" placeholder="שם יישוב" autocomplete="off"></div>
+      <div><label for="kNum">מספר קלפי</label><select id="kNum" disabled><option value="">בחרו קודם יישוב</option></select></div>
+      <div class="or">או</div>
+      <div><label for="kBarzel">מספר ברזל</label><input id="kBarzel" inputmode="numeric" placeholder="למשל 10619"></div>
+      <button id="kBarzelGo" type="button">חיפוש</button>
+    </div>
+    <p class="tbl-note" style="margin:8px 0 0">ההשוואה לכנסת 25 היא לקלפי עם אותו מספר באותו יישוב. מספור הקלפיות משתנה לפעמים בין בחירות, ולכן ההתאמה לא תמיד מדויקת.</p>
+    <div id="kalpiDetail"></div>
+  </section>
+  <datalist id="townList"></datalist>
+
   <footer>
     <div id="foot"></div>
     <div>מקור כנסת 26: תוצאות <a href="https://votes26.bechirot.gov.il/nationalresults?lang=he" target="_blank" rel="noopener">ועדת הבחירות המרכזית</a>, דרך <a href="https://github.com/navonyaniv/election-il-2026" target="_blank" rel="noopener">קובץ הנתונים הפתוח election-il-2026</a>, ולצידו עותק של <a href="https://elections.govmap.gov.il/" target="_blank" rel="noopener">GovMap</a>, מפת הבחירות הממשלתית. הדף מציג תמיד את העדכני מביניהם. מקור כנסת 25: תוצאות הקלפיות הרשמיות.</div>
@@ -237,7 +299,7 @@ const REFRESH_MS = 60000;
 const PRESENCE = "https://mosheyadua.cu.ma/elections26/presence.php";  // מונה צופים, ראו server/presence.php
 
 // שמות הרשימות של כנסת 26 (לפי אותיות הפתק)
-const NAMES26 = {"מחל":"הליכוד","רק":"ביחד – בנט","דרך":"ישר! – איזנקוט","אמת":"הדמוקרטים","ל":"ישראל ביתנו","שס":"ש\"ס","ג":"יהדות התורה","ב":"עוצמה יהודית","ט":"הציונות הדתית","כן":"כחול לבן","עם":"רע\"ם","ודם":"הרשימה המשותפת","ד":"השותפות לכולם","די":"המילואימניקים","ני":"נעם"};
+const NAMES26 = {"מחל":"הליכוד","רק":"ביחד – בנט","דרך":"ישר! – איזנקוט","אמת":"הדמוקרטים","ל":"ישראל ביתנו","שס":"ש\"ס","ג":"יהדות התורה","ב":"עוצמה יהודית","ט":"הציונות הדתית–זהות","כן":"כחול לבן","עם":"רע\"ם","ודם":"הרשימה המשותפת","ד":"השותפות לכולם","די":"המילואימניקים","ני":"נעם"};
 const SURPLUS26 = [["רק","ל"],["דרך","אמת"],["מחל","ט"],["עם","ודם"],["שס","ג"]];
 
 // כנסת 25 — סכום כל הקלפיות מהקובץ הרשמי; מנדטים רשמיים
@@ -251,8 +313,8 @@ const ROWS = [
   {bloc:"coal", y26:["מחל"], y22:["מחל"]},
   {bloc:"coal", y26:["שס"], y22:["שס"]},
   {bloc:"coal", y26:["ג"], y22:["ג"]},
-  {bloc:"coal", y26:["ב","ט","ני"], y22:["ט"], label:"עוצמה יהודית + הציונות הדתית", note:"בכנסת 25 רצו ברשימה משותפת"},
-  {bloc:"opp", y26:["דרך","רק","כן","די"], y22:["פה","כן"], label:"גוש המרכז", note:"ישר!, ביחד, כחול לבן והמילואימניקים מול יש עתיד והמחנה הממלכתי"},
+  {bloc:"coal", y26:["ב","ט","ני"], y22:["ט"], label:"עוצמה יהודית + הציונות הדתית–זהות", note:"כולל נעם · בכנסת 25 רצו ברשימה משותפת אחת (הציונות הדתית)"},
+  {bloc:"opp", y26:["דרך","רק","כן","די"], y22:["פה","כן"], label:"ישר! + ביחד + כחול לבן + המילואימניקים", note:"מול יש עתיד + המחנה הממלכתי בכנסת 25"},
   {bloc:"opp", y26:["ל"], y22:["ל"]},
   {bloc:"opp", y26:["אמת"], y22:["אמת","מרצ"], label:"הדמוקרטים", note:"מול העבודה + מרצ"},
   {bloc:"arab", y26:["עם","ודם","ד"], y22:["עם","ום","ד"], label:"המפלגות הערביות", note:"רע\"ם, הרשימה המשותפת והשותפות לכולם מול רע\"ם, חד\"ש–תע\"ל ובל\"ד"},
@@ -417,7 +479,8 @@ function render(r){
     html+=`<tr class="bloc" style="--c:${B.c}"><td colspan="10">${B.name}</td></tr>`;
     for(const row of ROWS.filter(x=>x.bloc===b)){
       const v=sum(v26,row.y26), w=sum(Y22.votes,row.y22);
-      html+=line("",row.label||NAMES26[row.y26[0]],{v26:v,v22:w,p26:pct(v,valid),p22:pct(w,Y22.valid),s26:sum(s26,row.y26),s22:sum(Y22.seats,row.y22)});
+      const sub=row.note||(row.y22.map(k=>NAMES22[k]).join(" + ")!==(row.label||NAMES26[row.y26[0]])?"מול "+row.y22.map(k=>NAMES22[k]).join(" + "):"");
+      html+=line("",(row.label||NAMES26[row.y26[0]])+(sub?`<small class="tsub">${sub}</small>`:""),{v26:v,v22:w,p26:pct(v,valid),p22:pct(w,Y22.valid),s26:sum(s26,row.y26),s22:sum(Y22.seats,row.y22)});
     }
     html+=line("tot",`סך הכול ${B.name}`,{...T[b],c:B.c});
   }
@@ -445,7 +508,8 @@ function fromMirror(r){
   const votes={}; r.parties.forEach((k,i)=>votes[k]=arr[i]);
   const totalKalpi=Object.values(r.progress&&r.progress.towns||{}).reduce((s,t)=>s+t[1],0);
   return {time:new Date(r.updated), sourceName:"election-il-2026", bzb, voters, valid, votes,
-    counted_pct:r.counted_pct, votes_pct:r.votes_pct, turnout:r.turnout&&r.turnout.pct, totalKalpi};
+    counted_pct:r.counted_pct, votes_pct:r.votes_pct, turnout:r.turnout&&r.turnout.pct, totalKalpi,
+    towns:{parties:r.parties, data:r.towns||{}, progress:(r.progress&&r.progress.towns)||{}}};
 }
 function fromGovmap(g){
   return {time:new Date(g.generated), sourceName:"GovMap", bzb:g.bzb, voters:g.voters, valid:g.valid,
@@ -470,6 +534,7 @@ async function load(){
   r.label=hhmm(r.time);
   state=r; render(r);
   setLive(true,`חי · עודכן ב-${r.label}`);
+  if(M){ TOWNS26=M.towns; renderCities(); }
 }
 
 function setLive(ok,text){
@@ -478,7 +543,202 @@ function setLive(ok,text){
   document.getElementById("liveTxt").textContent=text;
 }
 
+// ---------- עיר מול עיר, קלפי מול קלפי ----------
+const KALPI26_API = "https://mosheyadua.cu.ma/elections26/kalpi26.php";  // הקובץ שמועלה דרך admin.php
+let TOWNS26=null;         // כנסת 26 לפי יישוב, מ-election-il-2026
+let T25=null;             // כנסת 25 לפי יישוב: קוד -> [שם, בזב, מצביעים, פסולים, כשרים, {רשימה: קולות}]
+let K25=null;             // כנסת 25 לפי קלפי (נטען רק כשמשתמשים באזור הקלפיות)
+let K26=null;             // מצב קובץ הקלפיות של כנסת 26
+const k26Towns={};        // מטמון: קוד יישוב -> קלפיות כנסת 26
+let cityCode=null;
+const nameToCode=new Map();
+
+const townName=c=>(T25&&T25[c]?T25[c][0]:null)||(K26&&K26.towns&&K26.towns[c]?K26.towns[c][0]:null)||`יישוב ${c}`;
+function codeFromInput(v){
+  v=(v||"").trim(); if(!v) return null;
+  if(nameToCode.has(v)) return nameToCode.get(v);
+  for(const [n,c] of nameToCode) if(n.startsWith(v)) return c;
+  return null;
+}
+function fillTownList(){
+  const codes=new Set([...Object.keys(T25||{}),...Object.keys(TOWNS26?TOWNS26.data:{})]);
+  nameToCode.clear();
+  for(const c of codes) nameToCode.set(townName(c),c);
+  const names=[...nameToCode.keys()].sort((a,b)=>a.localeCompare(b,"he"));
+  document.getElementById("townList").innerHTML=names.map(n=>`<option value="${n.replace(/"/g,"&quot;")}"></option>`).join("");
+}
+
+// סכום לפי גוש ולפי שורות ההשוואה, מתוך מילון רשימה->קולות
+function blocTotals(v){
+  const out={};
+  for(const b of ["coal","opp","arab"]) out[b]=sum(v,ROWS.filter(x=>x.bloc===b).flatMap(x=>x.y26)) ;
+  return out;
+}
+function blocTotals25(v){
+  const out={};
+  for(const b of ["coal","opp","arab"]) out[b]=sum(v,ROWS.filter(x=>x.bloc===b).flatMap(x=>x.y22));
+  return out;
+}
+
+// טבלת השוואה בלי מנדטים: קולות ואחוז, כנסת 26 / כנסת 25 / פער
+function cmpTable(v26,valid26,v25,valid25){
+  const gp=(d,f,eps=0)=>{const cls=d>eps?"up":d<-eps?"down":"zero";
+    return `<span class="gap ${cls}"><bdi dir="ltr">${d>eps?"+":d<-eps?"−":""}${f(Math.abs(d))}</bdi></span>`;};
+  const has26=v26!=null, has25=v25!=null;
+  const cell=(x,f)=>x==null?"—":f(x);
+  const line=(cls,name,a,c)=>`<tr class="${cls}"${c?` style="--c:${c}"`:""}><td class="name">${name}</td>
+    <td class="gs v26 num">${cell(a.v26,fmt)}</td><td class="v25 num">${cell(a.v25,fmt)}</td><td class="num">${has26&&has25?gp(a.v26-a.v25,fmt):"—"}</td>
+    <td class="gs v26 num">${cell(a.p26,p1)}</td><td class="v25 num">${cell(a.p25,p1)}</td><td class="num">${has26&&has25?gp(a.p26-a.p25,x=>x.toFixed(1),0.05):"—"}</td></tr>`;
+  const mk=(k26,k25)=>{const a={};
+    if(has26){a.v26=sum(v26,k26);a.p26=pct(a.v26,valid26);} else {a.v26=a.p26=null;}
+    if(has25){a.v25=sum(v25,k25);a.p25=pct(a.v25,valid25);} else {a.v25=a.p25=null;}
+    return a;};
+  let html="";
+  for(const b of ["coal","opp","arab"]){
+    const B=BLOCS[b], rows=ROWS.filter(x=>x.bloc===b);
+    html+=`<tr class="bloc" style="--c:${B.c}"><td colspan="7">${B.name}</td></tr>`;
+    for(const row of rows) html+=line("",row.label||NAMES26[row.y26[0]],mk(row.y26,row.y22));
+    html+=line("tot",`סך הכול ${B.name}`,mk(rows.flatMap(x=>x.y26),rows.flatMap(x=>x.y22)),B.c);
+  }
+  const k26=new Set(ROWS.flatMap(x=>x.y26)), k25=new Set(ROWS.flatMap(x=>x.y22));
+  const o={v26:has26?Object.keys(v26).filter(k=>!k26.has(k)).reduce((s,k)=>s+v26[k],0):null,
+           v25:has25?Object.keys(v25).filter(k=>!k25.has(k)).reduce((s,k)=>s+v25[k],0):null};
+  o.p26=has26?pct(o.v26,valid26):null; o.p25=has25?pct(o.v25,valid25):null;
+  html+=line("","שאר הרשימות",o);
+  html+=line("grand","סך הכול הקולות הכשרים",{v26:has26?valid26:null,v25:has25?valid25:null,p26:has26?100:null,p25:has25?100:null});
+  return `<div class="tbl-wrap"><table><thead>
+    <tr><th rowspan="2" class="name">רשימה</th><th class="grp gs" colspan="3">קולות</th><th class="grp gs" colspan="3">אחוז מהקולות</th></tr>
+    <tr><th class="gs">כנסת 26</th><th>כנסת 25</th><th>פער</th><th class="gs">כנסת 26</th><th>כנסת 25</th><th>פער</th></tr>
+    </thead><tbody>${html}</tbody></table></div>`;
+}
+
+function miniBlocs(v26,valid26,v25,valid25){
+  const b26=v26?blocTotals(v26):null, b25=v25?blocTotals25(v25):null;
+  return `<div class="mini-blocs">${["coal","opp","arab"].map(b=>{
+    const p26=b26?pct(b26[b],valid26):null, p25=b25?pct(b25[b],valid25):null;
+    return `<div class="mb" style="--c:${BLOCS[b].c}"><div class="t">${BLOCS[b].name}</div>
+      <div class="pp num">${p26!=null?p1(p26):"—"} <small>מול ${p25!=null?p1(p25):"—"}</small> ${p26!=null&&p25!=null?deltaPct(p26-p25):""}</div>
+      <div class="vv num">${b26?fmt(b26[b]):"—"} קולות מול ${b25?fmt(b25[b]):"—"}</div></div>`;}).join("")}</div>`;
+}
+
+function town26(code){
+  if(!TOWNS26||!TOWNS26.data[code]) return null;
+  const [bzb,voters,invalid,valid,arr]=TOWNS26.data[code];
+  const v={}; TOWNS26.parties.forEach((k,i)=>v[k]=arr[i]);
+  const pr=TOWNS26.progress[code];
+  return {bzb,voters,valid,v,counted:pr?pr[0]:null,total:pr?pr[1]:null};
+}
+
+function renderCityDetail(){
+  const el=document.getElementById("cityDetail");
+  if(!cityCode){ el.innerHTML=""; return; }
+  const a=town26(cityCode), b=T25&&T25[cityCode];
+  if(!a&&!b){ el.innerHTML=`<div class="empty">אין נתונים ליישוב הזה.</div>`; return; }
+  const meta=[a&&a.total?`נספרו ${fmt(a.counted)} מתוך ${fmt(a.total)} קלפיות`:"",
+    a?`הצבעה בקלפיות שנספרו: ${p1(pct(a.voters,a.bzb))}`:"", b?`כנסת 25: ${p1(pct(b[2],b[1]))}`:""].filter(Boolean).join(" · ");
+  el.innerHTML=`<div class="place"><div class="place-head"><h3>${townName(cityCode)}</h3><span class="meta num">${meta}</span></div>
+    ${miniBlocs(a&&a.v,a&&a.valid,b&&b[5],b&&b[4])}
+    ${cmpTable(a?a.v:null,a?a.valid:0,b?b[5]:null,b?b[4]:0)}</div>`;
+}
+
+function renderCityTable(){
+  if(!T25||!TOWNS26) return;
+  const codes=Object.keys(T25).filter(c=>TOWNS26.data[c]).sort((x,y)=>T25[y][1]-T25[x][1]).slice(0,30);
+  const cell=(p26,p25)=>`<td class="gs v26 num">${p1(p26)}</td><td class="v25 num">${p1(p25)}</td><td class="num">${deltaPct(p26-p25)}</td>`;
+  let html=`<table><thead><tr><th rowspan="2" class="name">עיר</th><th class="grp gs" colspan="3">קולות כשרים</th>
+    <th class="grp gs" colspan="3">קואליציה</th><th class="grp gs" colspan="3">אופוזיציה</th><th class="grp gs" colspan="3">מפלגות ערביות</th></tr><tr>
+    <th class="gs">כנסת 26</th><th>כנסת 25</th><th>פער</th>${"<th class=\"gs\">כנסת 26</th><th>כנסת 25</th><th>פער</th>".repeat(3)}</tr></thead><tbody>`;
+  for(const c of codes){
+    const a=town26(c), b=T25[c], b26=blocTotals(a.v), b25=blocTotals25(b[5]);
+    const d=a.valid-b[4];
+    html+=`<tr><td class="name"><button class="citybtn" type="button" data-code="${c}">${townName(c)}</button></td>
+      <td class="gs v26 num">${fmt(a.valid)}</td><td class="v25 num">${fmt(b[4])}</td>
+      <td class="num"><span class="gap ${d>0?"up":d<0?"down":"zero"}"><bdi dir="ltr">${d>0?"+":d<0?"−":""}${fmt(Math.abs(d))}</bdi></span></td>
+      ${cell(pct(b26.coal,a.valid),pct(b25.coal,b[4]))}${cell(pct(b26.opp,a.valid),pct(b25.opp,b[4]))}${cell(pct(b26.arab,a.valid),pct(b25.arab,b[4]))}</tr>`;
+  }
+  document.getElementById("cityTable").innerHTML=html+"</tbody></table>";
+}
+
+function renderCities(){ if(T25){ fillTownList(); renderCityTable(); renderCityDetail(); } }
+
+document.getElementById("cityInput").addEventListener("change",e=>{ cityCode=codeFromInput(e.target.value); renderCityDetail(); });
+document.getElementById("cityTable").addEventListener("click",e=>{
+  const btn=e.target.closest(".citybtn"); if(!btn) return;
+  cityCode=btn.dataset.code; document.getElementById("cityInput").value=townName(cityCode); renderCityDetail();
+  document.getElementById("cityDetail").scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+// ---- קלפיות ----
+async function ensureK25(){ if(!K25) K25=(await getJson("data/k25.json")).towns; return K25; }
+async function k26Town(code){
+  if(!K26||!K26.available) return null;
+  if(!(code in k26Towns)) k26Towns[code]=(await getJson(`${KALPI26_API}?town=${code}`)).town;
+  return k26Towns[code];
+}
+const kSort=(a,b)=>parseFloat(a)-parseFloat(b)||a.localeCompare(b);
+
+async function onKalpiTown(){
+  const code=codeFromInput(document.getElementById("kTown").value), sel=document.getElementById("kNum");
+  document.getElementById("kalpiDetail").innerHTML="";
+  if(!code){ sel.disabled=true; sel.innerHTML=`<option value="">בחרו קודם יישוב</option>`; return; }
+  sel.disabled=true; sel.innerHTML=`<option value="">טוען…</option>`;
+  const [k25,t26]=await Promise.all([ensureK25(),k26Town(code).catch(()=>null)]);
+  const nums=new Set([...Object.keys((k25[code]||{}).k||{}),...Object.keys((t26||{}).k||{})]);
+  sel.innerHTML=`<option value="">בחרו קלפי (${fmt(nums.size)})</option>`+[...nums].sort(kSort).map(n=>`<option value="${n}">קלפי ${n}</option>`).join("");
+  sel.disabled=false; sel.dataset.code=code;
+}
+
+async function showKalpi(code,num){
+  const el=document.getElementById("kalpiDetail");
+  el.innerHTML=`<div class="empty">טוען…</div>`;
+  const [k25,t26]=await Promise.all([ensureK25(),k26Town(code).catch(()=>null)]);
+  const r25=k25[code]&&k25[code].k[num], r26=t26&&t26.k[num];
+  if(!r25&&!r26){ el.innerHTML=`<div class="empty">לא נמצאה קלפי ${num} ב${townName(code)}.</div>`; return; }
+  const meta=[r26?`ברזל כנסת 26: ${r26[0]}`:"", r25?`ברזל כנסת 25: ${r25[0]}`:"",
+    r26?`הצבעה כנסת 26: ${p1(pct(r26[2],r26[1]))} (${fmt(r26[2])} מתוך ${fmt(r26[1])})`:"",
+    r25?`כנסת 25: ${p1(pct(r25[2],r25[1]))} (${fmt(r25[2])} מתוך ${fmt(r25[1])})`:""].filter(Boolean).join(" · ");
+  const note=!r26?`<div class="empty" style="margin:12px 20px">${K26&&K26.available?"הקלפי הזאת לא נמצאה בקובץ של כנסת 26.":"עוד לא הועלה קובץ קלפיות של כנסת 26, ולכן מוצגת רק כנסת 25."}</div>`
+           :!r25?`<div class="empty" style="margin:12px 20px">בכנסת 25 לא הייתה ביישוב הזה קלפי עם המספר הזה.</div>`:"";
+  el.innerHTML=`<div class="place"><div class="place-head"><h3>${townName(code)} · קלפי ${num}</h3><span class="meta num">${meta}</span></div>
+    ${note}${miniBlocs(r26&&r26[5],r26&&r26[4],r25&&r25[5],r25&&r25[4])}
+    ${cmpTable(r26?r26[5]:null,r26?r26[4]:0,r25?r25[5]:null,r25?r25[4]:0)}</div>`;
+}
+
+async function findBarzel(){
+  const b=parseInt(document.getElementById("kBarzel").value,10);
+  const el=document.getElementById("kalpiDetail");
+  if(!b){ el.innerHTML=`<div class="empty">הקלידו מספר ברזל.</div>`; return; }
+  el.innerHTML=`<div class="empty">מחפש…</div>`;
+  if(K26&&K26.available){
+    try{ const r=await getJson(`${KALPI26_API}?barzel=${b}`); if(r.found) return showKalpi(r.found.code,r.found.kalpi); }catch(e){}
+  }
+  const k25=await ensureK25();
+  for(const [code,t] of Object.entries(k25)) for(const [num,row] of Object.entries(t.k)) if(row[0]===b) return showKalpi(code,num);
+  el.innerHTML=`<div class="empty">לא נמצאה קלפי עם מספר ברזל ${b}${K26&&K26.available?"":" (בכנסת 25; קובץ כנסת 26 עוד לא הועלה)"}.</div>`;
+}
+
+document.getElementById("kTown").addEventListener("change",onKalpiTown);
+document.getElementById("kNum").addEventListener("change",e=>{ if(e.target.value) showKalpi(e.target.dataset.code,e.target.value); });
+document.getElementById("kBarzelGo").addEventListener("click",findBarzel);
+document.getElementById("kBarzel").addEventListener("keydown",e=>{ if(e.key==="Enter") findBarzel(); });
+
+async function initPlaces(){
+  try{ T25=await getJson("data/t25.json"); renderCities(); }catch(e){}
+  try{
+    K26=await getJson(KALPI26_API+"?index=1");
+    document.getElementById("k26status").textContent=K26.available
+      ?`קובץ כנסת 26: ${fmt(K26.kalpis)} קלפיות, הועלה ${new Date(K26.uploaded).toLocaleString("he-IL",{timeZone:"Asia/Jerusalem",day:"numeric",month:"numeric",hour:"2-digit",minute:"2-digit"})}`
+      :"קובץ הקלפיות של כנסת 26 עוד לא הועלה · כנסת 25 זמינה";
+    if(K26.available) renderCities();
+  }catch(e){ document.getElementById("k26status").textContent="לא הצלחתי לבדוק את קובץ כנסת 26 · כנסת 25 זמינה"; }
+  // קישור ישיר: ?city=קוד או ?kalpi=קוד:מספר
+  const q=new URLSearchParams(location.search);
+  if(q.get("city")){ cityCode=q.get("city"); document.getElementById("cityInput").value=townName(cityCode); renderCityDetail(); }
+  if(q.get("kalpi")){ const [c,n]=q.get("kalpi").split(":"); document.getElementById("kTown").value=townName(c); await onKalpiTown(); document.getElementById("kNum").value=n; showKalpi(c,n); }
+}
+
 load();
+initPlaces();
 setInterval(load,REFRESH_MS);
 
 // צופים עכשיו: מזהה אקראי לכל דפדפן, דיווח כל 30 שניות כשהלשונית גלויה
