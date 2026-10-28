@@ -146,6 +146,7 @@ footer a{color:inherit}
 
 <script>
 const FEED_GOVMAP = "data/live.json";  // עותק של GovMap, מתעדכן ידנית עם scripts/update.mjs
+const FEED_PROXY = "https://mosheyadua.cu.ma/elections26/govmap.php";  // GovMap דרך השרת; כרגע GovMap חוסם אותו
 const FEED_MIRROR = "https://navonyaniv.github.io/election-il-2026/results.json";
 const REFRESH_MS = 60000;
 
@@ -329,8 +330,9 @@ function fromGovmap(g){
 }
 
 async function load(){
-  const [g,m]=await Promise.allSettled([getJson(FEED_GOVMAP).then(fromGovmap),getJson(FEED_MIRROR).then(fromMirror)]);
-  const G=g.status==="fulfilled"?g.value:null, M=m.status==="fulfilled"?m.value:null;
+  const [g,p,m]=await Promise.allSettled([getJson(FEED_GOVMAP).then(fromGovmap),getJson(FEED_PROXY).then(fromGovmap),getJson(FEED_MIRROR).then(fromMirror)]);
+  const ok=x=>x.status==="fulfilled"?x.value:null;
+  const G=[ok(g),ok(p)].filter(Boolean).sort((a,b)=>b.time-a.time)[0]||null, M=ok(m);
   if(!G&&!M){
     setLive(false,state?`אין חיבור למקורות · מוצגים נתוני ${state.label}`:"אין חיבור למקורות הנתונים, מנסה שוב בעוד דקה");
     return;
