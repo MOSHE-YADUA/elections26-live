@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ספירת הקולות 2026</title>
+<meta name="description" content="ספירת הקולות לכנסת ה-26 בזמן אמת, בהשוואה לבחירות לכנסת ה-25">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* פריסה: עמודה אחת של "פתקים" — סיכום גושים, רצועת 120 מושבים, טבלת השוואה, השתתפות */
+:root{
+  --bg:#f3f5f8; --surface:#ffffff; --ink:#151b2b; --muted:#5d6678; --line:#dde2ea;
+  --coal:#2a49c9; --coal-soft:#dfe5fb; --opp:#c8551f; --opp-soft:#fbe6dc;
+  --arab:#6f7a8c; --other:#b9c0cc; --up:#1f8a4c; --down:#c0392b; --live:#d62828;
+  --display:"Frank Ruhl Libre","David","Times New Roman",serif;
+  --body:"Assistant","Segoe UI","Arial",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0f131c; --surface:#171d2a; --ink:#e9edf5; --muted:#9aa4b8; --line:#2a3245;
+  --coal:#7d95ff; --coal-soft:#1f2a52; --opp:#ff8f5c; --opp-soft:#4a2616;
+  --arab:#8d97aa; --other:#4a5266; --up:#4cc985; --down:#ff6b5e; --live:#ff5a5a;
+  color-scheme:dark;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto;padding-block:28px 48px;display:grid;gap:22px}
+h1,h2{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1.1}
+h2{font-size:22px;font-weight:700}
+.num{font-variant-numeric:tabular-nums}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+.sub{color:var(--muted);margin:6px 0 0}
+.status{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);
+  border-radius:999px;padding:4px 12px;font-size:14px;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--live);animation:pulse 1.6s infinite}
+.chip.err .dot{background:var(--muted);animation:none}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+.progress{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.progress>i{display:block;height:100%;background:var(--ink);width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.blocs{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.bloc{border-top:5px solid var(--c);}
+.bloc .lbl{font-size:14px;letter-spacing:.04em;color:var(--muted);font-weight:700}
+.bloc .seats{font-family:var(--display);font-size:clamp(48px,9vw,76px);font-weight:900;line-height:1;color:var(--c)}
+.bloc .seats small{font-size:.35em;font-weight:700;color:var(--muted);margin-inline-start:6px}
+.bloc dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:14px 0 0;font-size:15px}
+.bloc dt{color:var(--muted)} .bloc dd{margin:0}
+.delta{font-weight:700;font-size:.92em;margin-inline-start:6px}
+.delta.up{color:var(--up)} .delta.down{color:var(--down)} .delta.zero{color:var(--muted)}
+.aside{color:var(--muted);font-size:14px;margin:0}
+.strip-row{display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:center}
+.strip-row+.strip-row{margin-top:10px}
+.strip-row b{font-family:var(--display);font-size:18px}
+.strip{position:relative;display:grid;grid-template-columns:repeat(120,1fr);gap:1px;height:30px}
+.strip i{display:block;border-radius:1px}
+.strip .maj{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--ink);right:calc(60/120*100%)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:2px;display:inline-block}
+.tbl-wrap{overflow-x:auto;margin:0 -20px;padding:0 20px}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:15px}
+th,td{padding:9px 8px;text-align:start;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.03em}
+th.y{text-align:center;border-bottom:2px solid var(--ink)}
+td.n,th.n{text-align:end}
+tr.sect td{background:var(--soft);font-weight:700;font-family:var(--display);font-size:17px;border-bottom:2px solid var(--c)}
+tr.sum td{font-weight:700;border-bottom:2px solid var(--line)}
+.slip{display:inline-block;min-width:34px;text-align:center;border:1.5px solid var(--ink);border-radius:3px;
+  padding:0 5px;font-family:var(--display);font-weight:700;font-size:14px;line-height:1.5;margin-inline-end:8px}
+.pname{font-weight:600}
+.pname small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.below{color:var(--muted)}
+.tag{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-inline-start:6px;white-space:nowrap}
+.turn{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.stat .k{font-size:14px;color:var(--muted)}
+.stat .v{font-family:var(--display);font-size:34px;font-weight:700;line-height:1.15}
+.meter{height:10px;background:var(--line);border-radius:5px;position:relative;margin-top:8px}
+.meter>i{position:absolute;inset-block:0;right:0;border-radius:5px}
+footer{color:var(--muted);font-size:13px;line-height:1.7}
+footer a{color:inherit}
+@media (max-width:640px){.blocs{grid-template-columns:1fr}.strip{height:24px}.strip-row{grid-template-columns:52px 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>ספירת הקולות 2026</h1>
+      <p class="sub">הכנסת ה-26 מול הכנסת ה-25 · קואליציה מול אופוזיציה, בלי המפלגות הערביות</p>
+    </div>
+    <div class="status">
+      <span class="chip" id="live"><span class="dot"></span><span id="liveTxt">טוען נתונים…</span></span>
+      <span class="chip num" id="counted">—</span>
+    </div>
+  </header>
+  <div class="progress" title="אחוז הקלפיות שנספרו"><i id="bar"></i></div>
+
+  <section class="blocs" id="blocs"></section>
+
+  <section class="card">
+    <h2>120 המושבים</h2>
+    <div style="margin-top:16px">
+      <div class="strip-row"><b>2026</b><div class="strip" id="s26"></div></div>
+      <div class="strip-row"><b>2022</b><div class="strip" id="s22"></div></div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--coal)"></i>קואליציה</span>
+      <span><i style="background:var(--opp)"></i>אופוזיציה</span>
+      <span><i style="background:var(--arab)"></i>מפלגות ערביות (לא נספרות בגושים)</span>
+      <span>הקו השחור: 61 מנדטים</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>השוואה לפי מפלגות</h2>
+    <p class="aside" style="margin-top:6px">הקולות של 2026 הם מהקלפיות שנספרו עד עכשיו, ולכן הם עדיין נמוכים מהסופי. האחוזים כבר ברי השוואה.</p>
+    <div class="tbl-wrap" style="margin-top:12px">
+      <table>
+        <thead>
+          <tr><th rowspan="2">רשימה</th><th class="y" colspan="3">2026 (בספירה)</th><th class="y" colspan="3">2022 (סופי)</th><th rowspan="2" class="n">שינוי במנדטים</th></tr>
+          <tr><th class="n">קולות</th><th class="n">אחוז</th><th class="n">מנדטים</th><th class="n">קולות</th><th class="n">אחוז</th><th class="n">מנדטים</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>אחוזי הצבעה</h2>
+    <div class="turn" id="turn" style="margin-top:14px"></div>
+  </section>
+
+  <footer>
+    <div id="foot"></div>
+    <div>מקור 2026: <a href="https://votes26.bechirot.gov.il/nationalresults?lang=he" target="_blank" rel="noopener">ועדת הבחירות המרכזית</a>, דרך <a href="https://github.com/navonyaniv/election-il-2026" target="_blank" rel="noopener">קובץ הנתונים הפתוח election-il-2026</a> שמתעדכן מהוועדה. מקור 2022: תוצאות הקלפיות הרשמיות של הכנסת ה-25.</div>
+    <div>המנדטים של 2026 מחושבים בדף לפי שיטת בדר-עופר, אחוז חסימה 3.25% והסכמי העודפים שפורסמו. עד פרסום התוצאות הרשמיות ברשומות התוצאות עלולות להשתנות.</div>
+  </footer>
+</div>
+
+<script>
+const FEED = "https://navonyaniv.github.io/election-il-2026/results.json";
+const REFRESH_MS = 60000;
+
+// שמות הרשימות של 2026 (לפי אותיות הפתק)
+const NAMES26 = {"מחל":"הליכוד","רק":"ביחד – בנט","דרך":"ישר! – איזנקוט","אמת":"הדמוקרטים","ל":"ישראל ביתנו","שס":"ש\"ס","ג":"יהדות התורה","ב":"עוצמה יהודית","ט":"הציונות הדתית","כן":"כחול לבן","עם":"רע\"ם","ודם":"הרשימה המשותפת","ד":"השותפות לכולם","די":"המילואימניקים","ני":"נעם"};
+const SURPLUS26 = [["רק","ל"],["דרך","אמת"],["מחל","ט"],["עם","ודם"],["שס","ג"]];
+
+// בחירות 25 — סכום כל הקלפיות מהקובץ הרשמי; מנדטים רשמיים
+const Y22 = {bzb:6788804, voters:4794593, valid:4764742,
+  votes:{"מחל":1115336,"פה":847435,"ט":516470,"כן":432482,"שס":392964,"ג":280194,"ל":213687,"עם":194047,"ום":178735,"אמת":175992,"מרצ":150793,"ד":138617,"ב":56775},
+  seats:{"מחל":32,"פה":24,"ט":14,"כן":12,"שס":11,"ג":7,"ל":6,"עם":5,"ום":5,"אמת":4}};
+const NAMES22 = {"מחל":"הליכוד","פה":"יש עתיד","ט":"הציונות הדתית","כן":"המחנה הממלכתי","שס":"ש\"ס","ג":"יהדות התורה","ל":"ישראל ביתנו","עם":"רע\"ם","ום":"חד\"ש–תע\"ל","אמת":"העבודה","מרצ":"מרצ","ד":"בל\"ד","ב":"הבית היהודי"};
+
+// שורות ההשוואה: כל שורה מחברת רשימות 2026 לרשימות המקבילות להן ב-2022
+const ROWS = [
+  {bloc:"coal", y26:["מחל"], y22:["מחל"]},
+  {bloc:"coal", y26:["שס"], y22:["שס"]},
+  {bloc:"coal", y26:["ג"], y22:["ג"]},
+  {bloc:"coal", y26:["ב","ט","ני"], y22:["ט"], label:"עוצמה יהודית + הציונות הדתית", note:"ב-2022 רצו ברשימה משותפת"},
+  {bloc:"opp", y26:["דרך","רק","כן","די"], y22:["פה","כן"], label:"ישר!, ביחד, כחול לבן, המילואימניקים", note:"מול יש עתיד והמחנה הממלכתי — המפלגות התפצלו והתאחדו מחדש"},
+  {bloc:"opp", y26:["ל"], y22:["ל"]},
+  {bloc:"opp", y26:["אמת"], y22:["אמת","מרצ"], label:"הדמוקרטים", note:"מול העבודה + מרצ"},
+  {bloc:"arab", y26:["עם","ודם","ד"], y22:["עם","ום","ד"], label:"המפלגות הערביות", note:"לא נכללות בגושים"},
+];
+const BLOCS = {
+  coal:{name:"קואליציה", c:"var(--coal)", soft:"var(--coal-soft)"},
+  opp:{name:"אופוזיציה", c:"var(--opp)", soft:"var(--opp-soft)"},
+  arab:{name:"מפלגות ערביות", c:"var(--arab)", soft:"transparent"},
+};
+
+function badetOfer(votes, valid, pairs, total=120, thr=0.0325){
+  const pass={}; for(const k in votes) if(votes[k]>=valid*thr) pass[k]=votes[k];
+  const passed=Object.values(pass).reduce((a,b)=>a+b,0);
+  if(!passed) return {};
+  const units=[], seen=new Set();
+  for(const [a,b] of pairs) if(pass[a]&&pass[b]){units.push([a,b]);seen.add(a);seen.add(b);}
+  for(const k in pass) if(!seen.has(k)) units.push([k]);
+  const uv=units.map(u=>u.reduce((s,k)=>s+pass[k],0));
+  const q=passed/total, us=uv.map(v=>Math.floor(v/q));
+  let left=total-us.reduce((a,b)=>a+b,0);
+  while(left-->0){let bi=0,bv=-1;uv.forEach((v,i)=>{const r=v/(us[i]+1);if(r>bv){bv=r;bi=i}});us[bi]++;}
+  const out={};
+  units.forEach((u,i)=>{
+    if(u.length===1){out[u[0]]=us[i];return;}
+    const v=u.map(k=>pass[k]), qq=(v[0]+v[1])/us[i], s=v.map(x=>Math.floor(x/qq));
+    let l=us[i]-s[0]-s[1];
+    while(l-->0){const j=v[0]/(s[0]+1)>=v[1]/(s[1]+1)?0:1;s[j]++;}
+    out[u[0]]=s[0];out[u[1]]=s[1];
+  });
+  return out;
+}
+
+const fmt=n=>n.toLocaleString("he-IL");
+const pct=(a,b)=>b?a/b*100:0;
+const p1=x=>x.toFixed(1)+"%";
+const sum=(o,keys)=>keys.reduce((s,k)=>s+(o[k]||0),0);
+function delta(d,unit=""){
+  const cls=d>0?"up":d<0?"down":"zero";
+  const s=d>0?"+"+d:d<0?"−"+Math.abs(d):"0";
+  return `<span class="delta ${cls} num"><bdi dir="ltr">${s}</bdi>${unit}</span>`;
+}
+function deltaPct(d){
+  const cls=d>0.05?"up":d<-0.05?"down":"zero";
+  const s=(d>0?"+":d<0?"−":"")+Math.abs(d).toFixed(1);
+  return `<span class="delta ${cls} num"><bdi dir="ltr">${s}</bdi> נק'</span>`;
+}
+
+let state=null;
+
+function render(r){
+  const [bzb,voters,invalid,valid,arr]=r.country;
+  const v26={}; r.parties.forEach((k,i)=>v26[k]=arr[i]);
+  const s26=badetOfer(v26,valid,SURPLUS26);
+
+  // סטטוס
+  document.getElementById("counted").textContent=`נספרו ${r.counted_pct}% מהקלפיות · ${r.votes_pct}% מהקולות`;
+  document.getElementById("bar").style.width=Math.min(100,r.counted_pct)+"%";
+
+  // גושים
+  const blocKeys=b=>ROWS.filter(x=>x.bloc===b);
+  const blocHtml=["coal","opp"].map(b=>{
+    const rows=blocKeys(b);
+    const k26=rows.flatMap(x=>x.y26), k22=rows.flatMap(x=>x.y22);
+    const sv26=sum(v26,k26), sv22=sum(Y22.votes,k22);
+    const ss26=sum(s26,k26), ss22=sum(Y22.seats,k22);
+    const pc26=pct(sv26,valid), pc22=pct(sv22,Y22.valid);
+    const B=BLOCS[b];
+    return `<div class="card bloc" style="--c:${B.c}">
+      <div class="lbl">${B.name}</div>
+      <div class="seats num">${ss26}<small>מנדטים</small></div>
+      <dl>
+        <dt>מנדטים 2022</dt><dd class="num">${ss22} ${delta(ss26-ss22)}</dd>
+        <dt>קולות עד עכשיו</dt><dd class="num">${fmt(sv26)}</dd>
+        <dt>קולות 2022</dt><dd class="num">${fmt(sv22)}</dd>
+        <dt>אחוז מהקולות</dt><dd class="num">${p1(pc26)} <span class="aside" style="display:inline">(2022: ${p1(pc22)})</span> ${deltaPct(pc26-pc22)}</dd>
+      </dl>
+    </div>`;
+  }).join("");
+  const a26=sum(s26,["עם","ודם","ד"]), a22=sum(Y22.seats,["עם","ום","ד"]);
+  document.getElementById("blocs").innerHTML=blocHtml+
+    `<p class="aside" style="grid-column:1/-1">מחוץ לגושים: המפלגות הערביות, ${a26} מנדטים (2022: ${a22}).</p>`;
+
+  // רצועת מושבים
+  const fill=(el,seatsBy,order)=>{
+    const cells=[];
+    for(const row of order){const n=sum(seatsBy,row.keys);for(let i=0;i<n;i++)cells.push(BLOCS[row.bloc].c);}
+    while(cells.length<120)cells.push("var(--line)");
+    el.innerHTML=cells.map(c=>`<i style="background:${c}"></i>`).join("")+`<span class="maj"></span>`;
+  };
+  const order=y=>["coal","opp","arab"].map(b=>({bloc:b,keys:ROWS.filter(x=>x.bloc===b).flatMap(x=>x[y])}));
+  fill(document.getElementById("s26"),s26,order("y26"));
+  fill(document.getElementById("s22"),Y22.seats,order("y22"));
+
+  // טבלה
+  let html="";
+  for(const b of ["coal","opp","arab"]){
+    const B=BLOCS[b], rows=ROWS.filter(x=>x.bloc===b);
+    const k26=rows.flatMap(x=>x.y26), k22=rows.flatMap(x=>x.y22);
+    html+=`<tr class="sect" style="--c:${B.c};--soft:${B.soft}"><td colspan="8">${B.name}${b==="arab"?' <span class="tag">לא נכללות בגושים</span>':""}</td></tr>`;
+    for(const row of rows){
+      const sv26=sum(v26,row.y26), sv22=sum(Y22.votes,row.y22);
+      const ss26=sum(s26,row.y26), ss22=sum(Y22.seats,row.y22);
+      const slips=row.y26.map(k=>`<span class="slip">${k}</span>`).join("");
+      const name=row.label||NAMES26[row.y26[0]];
+      const parts26=row.y26.length>1?row.y26.map(k=>`${NAMES26[k]} ${s26[k]||0}`).join(" · "):"";
+      const n22=row.y22.map(k=>NAMES22[k]).join(" + ");
+      const sub=[parts26?`2026: ${parts26}`:"", row.note||(n22!==name?`מול ${n22}`:"")].filter(Boolean).join("<br>");
+      html+=`<tr${ss26?"":' class="below"'}>
+        <td><div style="display:flex;align-items:center"><span>${slips}</span><span class="pname">${name}${sub?`<small>${sub}</small>`:""}</span></div></td>
+        <td class="n num">${fmt(sv26)}</td><td class="n num">${p1(pct(sv26,valid))}</td><td class="n num"><b>${ss26}</b></td>
+        <td class="n num">${fmt(sv22)}</td><td class="n num">${p1(pct(sv22,Y22.valid))}</td><td class="n num">${ss22}</td>
+        <td class="n">${delta(ss26-ss22)}</td></tr>`;
+    }
+    if(b!=="arab"){
+      const sv26=sum(v26,k26), sv22=sum(Y22.votes,k22), ss26=sum(s26,k26), ss22=sum(Y22.seats,k22);
+      html+=`<tr class="sum"><td>סך הכול ${B.name}</td><td class="n num">${fmt(sv26)}</td><td class="n num">${p1(pct(sv26,valid))}</td><td class="n num">${ss26}</td>
+        <td class="n num">${fmt(sv22)}</td><td class="n num">${p1(pct(sv22,Y22.valid))}</td><td class="n num">${ss22}</td><td class="n">${delta(ss26-ss22)}</td></tr>`;
+    }
+  }
+  const known26=new Set(ROWS.flatMap(x=>x.y26)), known22=new Set(ROWS.flatMap(x=>x.y22));
+  const o26=Object.keys(v26).filter(k=>!known26.has(k)).reduce((s,k)=>s+v26[k],0);
+  const o22=Y22.valid-Object.keys(Y22.votes).filter(k=>known22.has(k)).reduce((s,k)=>s+Y22.votes[k],0);
+  html+=`<tr class="below"><td><span class="pname">כל שאר הרשימות<small>מתחת לאחוז החסימה</small></span></td>
+    <td class="n num">${fmt(o26)}</td><td class="n num">${p1(pct(o26,valid))}</td><td class="n num">0</td>
+    <td class="n num">${fmt(o22)}</td><td class="n num">${p1(pct(o22,Y22.valid))}</td><td class="n num">0</td><td></td></tr>`;
+  document.getElementById("tbody").innerHTML=html;
+
+  // השתתפות
+  const t26=r.turnout&&r.turnout.pct, t22=pct(Y22.voters,Y22.bzb);
+  document.getElementById("turn").innerHTML=`
+    <div class="stat"><div class="k">אחוז הצבעה 2026</div><div class="v num">${t26?p1(t26):"—"} ${t26?deltaPct(t26-t22):""}</div>
+      <div class="meter"><i style="width:${t26||0}%;background:var(--ink)"></i></div></div>
+    <div class="stat"><div class="k">אחוז הצבעה 2022</div><div class="v num">${p1(t22)}</div>
+      <div class="meter"><i style="width:${t22}%;background:var(--muted)"></i></div></div>
+    <div class="stat"><div class="k">מצביעים שנספרו עד עכשיו</div><div class="v num">${fmt(voters)}</div><div class="aside">ב-2022: ${fmt(Y22.voters)} מצביעים</div></div>
+    <div class="stat"><div class="k">בעלי זכות בחירה</div><div class="v num">${fmt(bzb)}</div><div class="aside">ב-2022: ${fmt(Y22.bzb)}</div></div>`;
+
+  document.getElementById("foot").textContent=`הנתונים עודכנו במקור בשעה ${r.updated_label||"—"}. הדף בודק אם יש עדכון כל דקה.`;
+}
+
+function setLive(ok,text){
+  const el=document.getElementById("live");
+  el.classList.toggle("err",!ok);
+  document.getElementById("liveTxt").textContent=text;
+}
+
+async function load(){
+  try{
+    const res=await fetch(FEED+"?t="+Date.now(),{cache:"no-store"});
+    if(!res.ok) throw new Error(res.status);
+    const r=await res.json();
+    if(!r.country) throw new Error("no data");
+    state=r; render(r);
+    setLive(true,`חי · עודכן ב-${r.updated_label||"—"}`);
+  }catch(e){
+    setLive(false,state?`אין חיבור למקור · מוצגים נתוני ${state.updated_label}`:"אין חיבור למקור הנתונים, מנסה שוב בעוד דקה");
+  }
+}
+load();
+setInterval(load,REFRESH_MS);
+</script>
+</body>
+</html>
