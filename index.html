@@ -139,13 +139,13 @@ footer a{color:inherit}
 
   <footer>
     <div id="foot"></div>
-    <div>מקור כנסת 26: תוצאות <a href="https://votes26.bechirot.gov.il/nationalresults?lang=he" target="_blank" rel="noopener">ועדת הבחירות המרכזית</a>, דרך שני ערוצים. הראשון הוא <a href="https://elections.govmap.gov.il/" target="_blank" rel="noopener">GovMap</a>, מפת הבחירות הממשלתית, שמועתקת לכאן אוטומטית כל כמה דקות. השני הוא <a href="https://github.com/navonyaniv/election-il-2026" target="_blank" rel="noopener">קובץ הנתונים הפתוח election-il-2026</a>. הדף מציג תמיד את העדכני מביניהם. מקור כנסת 25: תוצאות הקלפיות הרשמיות.</div>
+    <div>מקור כנסת 26: תוצאות <a href="https://votes26.bechirot.gov.il/nationalresults?lang=he" target="_blank" rel="noopener">ועדת הבחירות המרכזית</a>, דרך <a href="https://github.com/navonyaniv/election-il-2026" target="_blank" rel="noopener">קובץ הנתונים הפתוח election-il-2026</a>, ולצידו עותק של <a href="https://elections.govmap.gov.il/" target="_blank" rel="noopener">GovMap</a>, מפת הבחירות הממשלתית, שמתעדכן ידנית. הדף מציג תמיד את העדכני מביניהם. מקור כנסת 25: תוצאות הקלפיות הרשמיות.</div>
     <div>המנדטים של כנסת 26 מחושבים בדף לפי שיטת בדר-עופר, אחוז חסימה 3.25% והסכמי העודפים שפורסמו. עד פרסום התוצאות הרשמיות ברשומות התוצאות עלולות להשתנות.</div>
   </footer>
 </div>
 
 <script>
-const FEED_GOVMAP = "data/live.json";  // מועתק מ-GovMap על ידי GitHub Actions
+const FEED_GOVMAP = "data/live.json";  // עותק של GovMap, מתעדכן ידנית עם scripts/update.mjs
 const FEED_MIRROR = "https://navonyaniv.github.io/election-il-2026/results.json";
 const REFRESH_MS = 60000;
 
