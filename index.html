@@ -27,7 +27,8 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.wrap{max-width:1080px;margin:0 auto;padding-block:28px 48px;display:grid;gap:22px}
+.wrap{max-width:1080px;margin:0 auto;padding-block:28px 48px;display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+.wrap>*{min-width:0}
 h1,h2{font-family:var(--display);text-wrap:balance;margin:0}
 h1{font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1.1}
 h2{font-size:22px;font-weight:700}
