@@ -46,6 +46,9 @@ h1 em{font-style:normal;color:var(--coal-lite)}
 .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);
   border-radius:999px;padding:5px 14px;font-size:14px;white-space:nowrap;color:var(--on-night)}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 var(--live);animation:ping 1.8s infinite}
+button.chip.share{font:inherit;font-size:14px;font-weight:700;cursor:pointer;background:var(--coal-lite);border-color:var(--coal-lite);color:var(--night)}
+button.chip.share:hover{filter:brightness(1.08)}
+button.chip.share:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .chip.err .dot{background:var(--on-night-mute);animation:none}
 @keyframes ping{0%{box-shadow:0 0 0 0 rgba(255,77,77,.6)}70%{box-shadow:0 0 0 9px rgba(255,77,77,0)}100%{box-shadow:0 0 0 0 rgba(255,77,77,0)}}
 .count-bar{height:4px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden}
@@ -258,6 +261,7 @@ footer a{color:inherit}
         <span class="chip" id="live"><span class="dot"></span><span id="liveTxt">טוען נתונים…</span></span>
         <span class="chip num" id="counted">—</span>
         <span class="chip num" id="viewers" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg><span id="viewersTxt"></span></span>
+        <button type="button" class="chip share" id="shareBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span id="shareTxt">שיתוף</span></button>
       </div>
     </div>
     <div class="count-bar" title="אחוז הקלפיות שנספרו"><i id="bar"></i></div>
@@ -1061,6 +1065,18 @@ async function initPlaces(){
   if(q.get("city")){ cityCode=q.get("city"); document.getElementById("cityInput").value=townName(cityCode); renderCityDetail(); }
   if(q.get("kalpi")){ const [c,n]=q.get("kalpi").split(":"); document.getElementById("kTown").value=townName(c); await onKalpiTown(); document.getElementById("kNum").value=n; showKalpi(c,n); }
 }
+
+// שיתוף: בטלפון חלון השיתוף של המכשיר, במחשב העתקה ללוח. משתף את הכתובת הנוכחית (כולל לשונית או תרחיש)
+document.getElementById("shareBtn").addEventListener("click",async()=>{
+  const url=location.href, txt=document.getElementById("shareTxt");
+  if(navigator.share){
+    try{ await navigator.share({title:document.title, text:"ספירת הקולות לכנסת 26 בזמן אמת, מול כנסת 25", url}); }catch(e){}
+    return;
+  }
+  let ok=true; try{ await navigator.clipboard.writeText(url); }catch(e){ ok=false; }
+  txt.textContent=ok?"הקישור הועתק":"העתיקו משורת הכתובת";
+  setTimeout(()=>{ txt.textContent="שיתוף"; },2500);
+});
 
 load();
 initPlaces();
