@@ -138,14 +138,14 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 /* ---------- טבלה מלאה ---------- */
 .explore{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
 .explore>*{min-width:0}
-.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:0 8px 20px -14px rgba(11,22,51,.5)}
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:0 8px 20px -14px rgba(11,22,51,.5)}
 .tabs button{font:inherit;font-family:var(--f-num);font-size:17px;padding:11px 8px;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
 .tabs button:hover{color:var(--ink);background:color-mix(in srgb,var(--line) 50%,transparent)}
 .tabs button[aria-selected="true"]{background:var(--night);color:#fff}
 .tabs button:focus-visible{outline:2px solid var(--coal);outline-offset:2px}
 .panel-box{background:var(--surface);border:1px solid var(--line);border-radius:12px}
 .panel-title{font-family:var(--f-num);font-weight:400;font-size:20px;padding:16px 20px 6px}
-@media (max-width:640px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.tabs button{font-size:15px;padding:10px 4px}}
+@media (max-width:640px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.tabs button{font-size:15px;padding:10px 4px}.tabs button:last-child{grid-column:span 2}}
 .tbl-wrap{overflow:auto;max-height:78vh;padding:0 20px 18px}
 .tbl-wrap thead th{position:sticky;top:0;z-index:2}
 .tbl-wrap thead tr:first-child th{height:42px}
@@ -202,6 +202,33 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 .empty{padding:18px 20px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:12px;margin-top:16px}
 @media (max-width:760px){.mini-blocs{grid-template-columns:1fr}.mb{border-inline-start:0;border-top:1px solid var(--line)}.mb:first-child{border-top:0}.finder input,.finder select{min-width:0;width:100%}.kalpi-finder>div{flex:1 1 100%}}
 .tbl-note{font-size:13px;color:var(--muted);margin:0 20px 12px}
+/* ---------- אילו וכאילו ---------- */
+.wi{padding:0 20px 20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.wi>*{min-width:0}
+#wiMoves{grid-template-columns:minmax(0,1fr)}
+.seg{display:inline-flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:10px;justify-self:start}
+.seg button{font:inherit;font-weight:700;padding:8px 18px;border:0;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer}
+.seg button[aria-checked="true"]{background:var(--night);color:#fff}
+.move{border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:10px;background:color-mix(in srgb,var(--line) 22%,var(--surface));min-width:0}
+.move-head,.dest{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;min-width:0}
+.move .lbl{font-weight:700;font-size:14px;color:var(--muted)}
+.move select,.move input{font:inherit;font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);max-width:100%}
+.move input{width:5.5em}
+.move select{min-width:0;flex:0 1 260px}
+.wi button:focus-visible,.move select:focus-visible,.move input:focus-visible{outline:2px solid var(--coal);outline-offset:1px}
+.xbtn{font:inherit;width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;margin-inline-start:auto}
+.dest .xbtn{margin-inline-start:0}
+.linkbtn{font:inherit;font-weight:700;color:var(--coal);background:none;border:0;padding:2px 0;cursor:pointer}
+.move-sum{font-size:13px;color:var(--muted)} .move-sum.bad{color:var(--down)}
+.wi-actions{display:flex;flex-wrap:wrap;gap:8px}
+.wi-actions button{font:inherit;font-weight:700;padding:9px 16px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.wi-actions button.main{background:var(--coal);border-color:var(--coal);color:#fff}
+.seatbars{padding:14px 20px;display:grid;gap:8px;border-bottom:1px solid var(--line)}
+.seatbars .row{display:grid;grid-template-columns:5.5em minmax(0,1fr);gap:10px;align-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.seatbar{display:flex;height:16px;border-radius:5px;overflow:hidden;position:relative;background:var(--line)}
+.seatbar i{display:block;height:100%}
+.seatbar::after{content:"";position:absolute;top:0;bottom:0;right:calc(100% * 61 / 120);width:2px;background:var(--ink)}
+.bdot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c,var(--muted));margin-inline-end:6px}
 
 footer{color:var(--muted);font-size:13px;line-height:1.75;display:grid;gap:4px}
 footer a{color:inherit}
@@ -271,6 +298,7 @@ footer a{color:inherit}
     <button type="button" role="tab" id="tab-cities" data-tab="cities" aria-controls="cities" aria-selected="false">עיר מול עיר</button>
     <button type="button" role="tab" id="tab-kalpi" data-tab="kalpi" aria-controls="kalpi" aria-selected="false">קלפי מול קלפי</button>
     <button type="button" role="tab" id="tab-k24" data-tab="k24" aria-controls="k24" aria-selected="false">לפי גושי כנסת 24</button>
+    <button type="button" role="tab" id="tab-whatif" data-tab="whatif" aria-controls="whatif" aria-selected="false">אילו וכאילו</button>
   </div>
 
   <div class="panel-box" role="tabpanel" id="all" aria-labelledby="tab-all">
@@ -338,6 +366,24 @@ footer a{color:inherit}
     <p class="tbl-note">השוואה משנית של קולות בלבד. מרצ והבית היהודי לא עברו את אחוז החסימה בכנסת 25, אבל שתיהן ישבו בקואליציה של כנסת 24, ולכן כאן הקולות שלהן נספרים עם האופוזיציה. בל"ד נספרת כאן עם המפלגות הערביות. הימין הממלכתי לא מקבל טיפול מיוחד: בכנסת 25 הקולות שלו בתוך המחנה הממלכתי, ובכנסת 26 בתוך הליכוד. המנדטים לא משתנים, ולכן לא מוצגים כאן.</p>
     <div id="altBlocs"></div>
     <div id="altTable"></div>
+  </div>
+
+  <div class="panel-box" role="tabpanel" id="whatif" aria-labelledby="tab-whatif" hidden>
+    <h2 class="panel-title">אילו וכאילו</h2>
+    <p class="tbl-note">מה היה קורה אילו חלק מהמצביעים של רשימה אחת היו מצביעים לרשימה אחרת? בוחרים רשימה, מעבירים אחוז מהקולות שלה לרשימה אחת או לכמה רשימות, והמנדטים מחושבים מחדש בשיטת בדר-עופר, עם אחוז חסימה 3.25% והסכמי העודפים. האחוזים הם מהקולות המקוריים של הרשימה.</p>
+    <div class="wi">
+      <div class="seg" id="wiSeg" role="radiogroup" aria-label="הבחירות לתרחיש">
+        <button type="button" role="radio" data-k="26" aria-checked="true">כנסת 26</button>
+        <button type="button" role="radio" data-k="25" aria-checked="false">כנסת 25</button>
+      </div>
+      <div id="wiMoves" style="display:grid;gap:12px"></div>
+      <div class="wi-actions">
+        <button type="button" class="main" id="wiAdd">+ העברה מרשימה נוספת</button>
+        <button type="button" id="wiReset">איפוס</button>
+        <button type="button" id="wiShare">העתקת קישור לתרחיש</button>
+      </div>
+      <div id="wiResult"></div>
+    </div>
   </div>
   </section>
   <datalist id="townList"></datalist>
@@ -587,6 +633,8 @@ function render(r){
   document.getElementById("altBlocs").innerHTML=`<div class="place" style="margin:8px 20px 0">${miniBlocs(v26,valid,Y22.votes,Y22.valid,ROWS_ALT)}</div>`;
   document.getElementById("altTable").innerHTML=cmpTable(v26,valid,Y22.votes,Y22.valid,ROWS_ALT);
 
+  if(WI.k==="26"&&!WI.built26) wiEditor(); else wiResults();
+
   document.getElementById("foot").textContent=`הנתונים המוצגים: ${r.sourceName}, עודכנו בשעה ${r.label}. הדף בודק אם יש עדכון כל דקה.`;
 }
 
@@ -828,6 +876,162 @@ document.getElementById("kNum").addEventListener("change",e=>{ if(e.target.value
 document.getElementById("kBarzelGo").addEventListener("click",findBarzel);
 document.getElementById("kBarzel").addEventListener("keydown",e=>{ if(e.key==="Enter") findBarzel(); });
 
+// ---------- אילו וכאילו: העברת קולות בין רשימות וחישוב המנדטים מחדש ----------
+// הסכמי העודפים של כנסת 25; עם הקולות הרשמיים הם נותנים בדיוק את המנדטים הרשמיים
+const SURPLUS25 = [["מחל","ט"],["פה","כן"],["שס","ג"],["אמת","מרצ"]];
+const NOVOTE = "_";  // יעד מיוחד: הקולות יוצאים מהספירה
+const newMove=()=>({from:"", dests:[{to:"", pct:10}]});
+const WI = {k:"26", s:{"26":[newMove()], "25":[newMove()]}, built26:false};
+const blocOf=y=>Object.fromEntries(ROWS.flatMap(r=>r[y].map(k=>[k,r.bloc])));
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+
+function wiBase(k){
+  if(k==="25") return {votes:Y22.votes, valid:Y22.valid, pairs:SURPLUS25, names:{...OTHER25,...NAMES22}, bloc:blocOf("y22")};
+  return state?{votes:state.votes, valid:state.valid, pairs:SURPLUS26, names:ALL26, bloc:blocOf("y26")}:null;
+}
+
+function wiEditor(){
+  for(const b of document.querySelectorAll("#wiSeg button")) b.setAttribute("aria-checked",b.dataset.k===WI.k);
+  const el=document.getElementById("wiMoves"), b=wiBase(WI.k), moves=WI.s[WI.k];
+  if(!b){ el.innerHTML=`<div class="empty" style="margin:0">טוען את נתוני כנסת 26…</div>`; document.getElementById("wiResult").innerHTML=""; return; }
+  if(WI.k==="26") WI.built26=true;
+  const list=Object.entries(b.votes).filter(([,n])=>n>0).sort((x,y)=>y[1]-x[1]).map(([k])=>k);
+  const opts=(sel,skip)=>list.filter(k=>!skip.has(k)).map(k=>`<option value="${esc(k)}"${k===sel?" selected":""}>${esc(b.names[k]||k)}</option>`).join("");
+  el.innerHTML=moves.map((m,i)=>{
+    const used=new Set(moves.filter((_,j)=>j!==i).map(x=>x.from));
+    return `<div class="move" data-i="${i}">
+      <div class="move-head"><span class="lbl">מעבירים קולות מ</span>
+        <select data-f="from" aria-label="הרשימה שממנה מעבירים"><option value="">בחרו רשימה</option>${opts(m.from,used)}</select>
+        ${moves.length>1?`<button type="button" class="xbtn" data-act="delMove" aria-label="הסרת ההעברה">✕</button>`:""}</div>
+      ${m.dests.map((d,j)=>`<div class="dest" data-j="${j}">
+        <input type="number" data-f="pct" min="0" max="100" step="0.5" inputmode="decimal" value="${d.pct}" aria-label="אחוז מהקולות">
+        <span class="lbl">% מהקולות אל</span>
+        <select data-f="to" aria-label="הרשימה שאליה מעבירים"><option value="">בחרו רשימה</option>${opts(d.to,new Set([m.from]))}
+          <option value="${NOVOTE}"${d.to===NOVOTE?" selected":""}>לא מצביעים (הקולות יוצאים מהספירה)</option></select>
+        ${m.dests.length>1?`<button type="button" class="xbtn" data-act="delDest" aria-label="הסרת היעד">✕</button>`:""}</div>`).join("")}
+      <div><button type="button" class="linkbtn" data-act="addDest">+ יעד נוסף לאותם קולות</button></div>
+      <div class="move-sum" id="wiSum${i}"></div>
+    </div>`;}).join("");
+  wiResults();
+}
+
+function wiCompute(){
+  const b=wiBase(WI.k); if(!b) return null;
+  const v={...b.votes}; let valid=b.valid, gone=0;
+  const sums=WI.s[WI.k].map(m=>{
+    const src=b.votes[m.from]||0, ds=m.dests.filter(d=>d.to&&d.pct>0);
+    const tot=ds.reduce((s,d)=>s+d.pct,0), f=tot>100?100/tot:1;
+    let moved=0;
+    if(m.from) for(const d of ds){
+      const n=Math.min(Math.round(src*d.pct*f/100),src-moved);
+      v[m.from]-=n; moved+=n;
+      if(d.to===NOVOTE){ valid-=n; gone+=n; } else v[d.to]=(v[d.to]||0)+n;
+    }
+    return {src,tot,moved,over:tot>100};
+  });
+  return {b,v,valid,gone,sums,s0:badetOfer(b.votes,b.valid,b.pairs),s1:badetOfer(v,valid,b.pairs)};
+}
+
+function wiResults(){
+  const el=document.getElementById("wiResult"), r=wiCompute();
+  if(!r){ el.innerHTML=""; return; }
+  const {b,v,s0,s1}=r;
+  WI.s[WI.k].forEach((m,i)=>{
+    const e=document.getElementById("wiSum"+i), s=r.sums[i]; if(!e) return;
+    e.className="move-sum num"+(s.over?" bad":"");
+    e.textContent=!m.from?"בחרו רשימה כדי לראות כמה קולות עוברים."
+      :`ל${b.names[m.from]||m.from} יש ${fmt(s.src)} קולות · מועברים ${fmt(s.moved)} קולות`+(s.over?` · סכום האחוזים ${s.tot}% עובר את 100%, ולכן כל האחוזים הוקטנו באופן יחסי`:"");
+  });
+
+  const gp=(d,f,eps=0)=>{const cls=d>eps?"up":d<-eps?"down":"zero";
+    return `<span class="gap ${cls}"><bdi dir="ltr">${d>eps?"+":d<-eps?"−":""}${f(Math.abs(d))}</bdi></span>`;};
+  const BL=["coal","opp","arab","none"], C={...BLOCS, none:{name:"רשימות אחרות", c:"var(--muted)", lite:"var(--muted)"}};
+  const tot=(o,b_)=>Object.keys(o).filter(k=>(b.bloc[k]||"none")===b_).reduce((s,k)=>s+(o[k]||0),0);
+  const T=Object.fromEntries(BL.map(x=>[x,{a:tot(s0,x),b:tot(s1,x),va:tot(b.votes,x),vb:tot(v,x)}]));
+  const shown=BL.filter(x=>x!=="none"||T.none.a||T.none.b);
+  const bar=s=>`<div class="seatbar">${shown.map(x=>`<i style="width:${T[x][s]/120*100}%;background:${C[x].lite}" title="${C[x].name}: ${T[x][s]}"></i>`).join("")}</div>`;
+  const cn=T.coal.b, maj=cn>=61?`לקואליציה יש רוב של ${cn} מנדטים`:`לקואליציה אין רוב: ${cn} מנדטים`;
+
+  const keys=Object.keys({...b.votes,...v}).filter(k=>s0[k]||s1[k]||k in Object.fromEntries(WI.s[WI.k].flatMap(m=>[[m.from,1],...m.dests.map(d=>[d.to,1])])))
+    .filter(k=>k&&k!==NOVOTE).sort((x,y)=>(v[y]||0)-(v[x]||0));
+  const line=(cls,name,a,c)=>`<tr class="${cls}"${c?` style="--c:${c}"`:""}><td class="name">${name}</td>
+    <td class="gs v25 num">${fmt(a.va)}</td><td class="v26 num">${fmt(a.vb)}</td><td class="num">${gp(a.vb-a.va,fmt)}</td>
+    ${a.pa==null?`<td class="gs v25 num">—</td><td class="v26 num">—</td><td class="num">—</td>`
+      :`<td class="gs v25 num">${p1(a.pa)}</td><td class="v26 num">${p1(a.pb)}</td><td class="num">${gp(a.pb-a.pa,x=>x.toFixed(1)+"%",0.05)}</td>`}
+    <td class="gs v25 num">${a.sa??""}</td><td class="v26 num">${a.sb??""}</td><td class="num">${a.sa==null?"":gp(a.sb-a.sa,x=>x)}</td></tr>`;
+  const row=(va,vb,sa,sb)=>({va,vb,pa:pct(va,r.b.valid),pb:pct(vb,r.valid),sa,sb});
+  let html="";
+  for(const k of keys){
+    const c=C[b.bloc[k]||"none"].c, under=!s1[k]&&(v[k]||0)>0;
+    html+=line("",`<span class="bdot" style="--c:${c}"></span>${esc(b.names[k]||k)}${under?`<small class="tsub">מתחת לאחוז החסימה</small>`:""}`,row(b.votes[k]||0,v[k]||0,s0[k]||0,s1[k]||0));
+  }
+  const ks=new Set(keys);
+  const ra=b.valid-sum(b.votes,[...ks]), rb=r.valid-sum(v,[...ks]);
+  if(ra||rb) html+=line("","שאר הרשימות",row(ra,rb,null,null));
+  if(r.gone) html+=line("","יצאו מהספירה (לא מצביעים)",{va:0,vb:r.gone,pa:null,pb:null,sa:null,sb:null});
+  html+=line("grand","סך הכול הקולות הכשרים",{va:b.valid,vb:r.valid,pa:100,pb:100,sa:120,sb:120});
+
+  const changed=r.sums.some(s=>s.moved>0);
+  el.innerHTML=`<div class="place" style="margin-top:4px">
+    <div class="place-head"><h3>${changed?"התוצאה בתרחיש":"התוצאה בלי שינוי"}</h3>
+      <span class="meta">${WI.k==="26"?"כנסת 26, לפי הקולות שנספרו עד עכשיו":"כנסת 25, התוצאה הסופית"} · ${maj}</span></div>
+    <div class="mini-blocs"${shown.length>3?` style="grid-template-columns:repeat(${shown.length},minmax(0,1fr))"`:""}>${shown.map(x=>{const t=T[x];
+      return `<div class="mb" style="--c:${C[x].c}"><div class="t">${C[x].name}</div>
+        <div class="pp num">${t.b} <small>מנדטים · במקור ${t.a}</small> ${delta(t.b-t.a)}</div>
+        <div class="vv num">${fmt(t.vb)} קולות · במקור ${fmt(t.va)}</div></div>`;}).join("")}</div>
+    <div class="seatbars">
+      <div class="row"><span>במקור</span>${bar("a")}</div>
+      <div class="row"><span>בתרחיש</span>${bar("b")}</div>
+      <div class="tbl-note" style="margin:0">הקו השחור מסמן 61 מנדטים. אחוז החסימה בתרחיש: ${fmt(Math.ceil(r.valid*0.0325))} קולות.</div>
+    </div>
+    <div class="tbl-wrap" style="padding-top:12px"><table><thead>
+      <tr><th rowspan="2" class="name">רשימה</th><th class="grp gs" colspan="3">קולות</th><th class="grp gs" colspan="3">אחוז מהקולות</th><th class="grp gs" colspan="3">מנדטים</th></tr>
+      <tr>${`<th class="gs">במקור</th><th>בתרחיש</th><th>שינוי</th>`.repeat(3)}</tr>
+    </thead><tbody>${html}</tbody></table></div></div>`;
+}
+
+{
+  const moves=document.getElementById("wiMoves");
+  const at=e=>{const m=e.target.closest(".move"), d=e.target.closest(".dest");
+    return {m:m&&WI.s[WI.k][+m.dataset.i], i:m?+m.dataset.i:-1, j:d?+d.dataset.j:-1};};
+  moves.addEventListener("input",e=>{
+    if(e.target.dataset.f!=="pct") return;
+    const {m,j}=at(e); m.dests[j].pct=Math.max(0,Math.min(100,parseFloat(e.target.value)||0)); wiResults();
+  });
+  moves.addEventListener("change",e=>{
+    const {m,j}=at(e), f=e.target.dataset.f;
+    if(f==="from"){ m.from=e.target.value; m.dests.forEach(d=>{ if(d.to===m.from) d.to=""; }); wiEditor(); }
+    else if(f==="to"){ m.dests[j].to=e.target.value; wiResults(); }
+  });
+  moves.addEventListener("click",e=>{
+    const act=e.target.dataset.act; if(!act) return;
+    const {m,i,j}=at(e);
+    if(act==="addDest") m.dests.push({to:"",pct:10});
+    if(act==="delDest") m.dests.splice(j,1);
+    if(act==="delMove") WI.s[WI.k].splice(i,1);
+    wiEditor();
+  });
+  document.getElementById("wiSeg").addEventListener("click",e=>{const b=e.target.closest("button"); if(b){ WI.k=b.dataset.k; wiEditor(); }});
+  document.getElementById("wiAdd").addEventListener("click",()=>{ WI.s[WI.k].push(newMove()); wiEditor(); });
+  document.getElementById("wiReset").addEventListener("click",()=>{ WI.s[WI.k]=[newMove()]; wiEditor(); });
+  document.getElementById("wiShare").addEventListener("click",async e=>{
+    const data={k:WI.k, m:WI.s[WI.k].filter(m=>m.from).map(m=>[m.from,m.dests.filter(d=>d.to).map(d=>[d.to,d.pct])])};
+    const url=location.origin+location.pathname+"?wi="+encodeURIComponent(JSON.stringify(data))+"#whatif";
+    history.replaceState(null,"",url);
+    let ok=true; try{ await navigator.clipboard.writeText(url); }catch(err){ ok=false; }
+    e.target.textContent=ok?"הקישור הועתק":"הקישור בשורת הכתובת";
+    setTimeout(()=>{ e.target.textContent="העתקת קישור לתרחיש"; },2500);
+  });
+  // קישור לתרחיש: ?wi={"k":"26","m":[[מאיפה,[[לאן,אחוז],...]],...]}
+  try{
+    const q=new URLSearchParams(location.search).get("wi");
+    if(q){ const d=JSON.parse(q); if(d.k==="25"||d.k==="26"){ WI.k=d.k;
+      const ms=(d.m||[]).map(([from,ds])=>({from:String(from), dests:(ds||[]).map(([to,p])=>({to:String(to), pct:Math.max(0,Math.min(100,+p||0))}))})).filter(m=>m.dests.length);
+      if(ms.length) WI.s[d.k]=ms; } }
+  }catch(e){}
+  wiEditor();
+}
+
 function selectTab(name){
   for(const b of document.querySelectorAll(".tabs [role=tab]")){
     const on=b.dataset.tab===name; b.setAttribute("aria-selected",on); b.tabIndex=on?0:-1;
@@ -841,7 +1045,7 @@ document.querySelector(".tabs").addEventListener("keydown",e=>{
   const n=tabs[(i+(e.key==="ArrowLeft"?1:-1)+tabs.length)%tabs.length]; n.focus(); n.click();
 });
 { const h=location.hash.slice(1), q=new URLSearchParams(location.search);
-  if(q.get("kalpi")||h==="kalpi") selectTab("kalpi"); else if(q.get("city")||h==="cities") selectTab("cities"); else if(h==="k24") selectTab("k24"); }
+  if(q.get("kalpi")||h==="kalpi") selectTab("kalpi"); else if(q.get("city")||h==="cities") selectTab("cities"); else if(h==="k24") selectTab("k24"); else if(q.get("wi")||h==="whatif") selectTab("whatif"); }
 
 async function initPlaces(){
   try{ T25=await getJson("data/t25.json"); renderCities(); }catch(e){}
