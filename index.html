@@ -1066,9 +1066,9 @@ async function initPlaces(){
   if(q.get("kalpi")){ const [c,n]=q.get("kalpi").split(":"); document.getElementById("kTown").value=townName(c); await onKalpiTown(); document.getElementById("kNum").value=n; showKalpi(c,n); }
 }
 
-// שיתוף: בטלפון חלון השיתוף של המכשיר, במחשב העתקה ללוח. משתף את הכתובת הנוכחית (כולל לשונית או תרחיש)
+// שיתוף: בטלפון חלון השיתוף של המכשיר, במחשב העתקה ללוח. תמיד הדף הראשי, בלי לשונית או תרחיש
 document.getElementById("shareBtn").addEventListener("click",async()=>{
-  const url=location.href, txt=document.getElementById("shareTxt");
+  const url=location.origin+location.pathname, txt=document.getElementById("shareTxt");
   if(navigator.share){
     try{ await navigator.share({title:document.title, text:"ספירת הקולות לכנסת 26 בזמן אמת, מול כנסת 25", url}); }catch(e){}
     return;
