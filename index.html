@@ -224,6 +224,7 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 .linkbtn{font:inherit;font-weight:700;color:var(--coal);background:none;border:0;padding:2px 0;cursor:pointer}
 .move-sum{font-size:13px;color:var(--muted)} .move-sum.bad{color:var(--down)}
 .wi-actions{display:flex;flex-wrap:wrap;gap:8px}
+.wi-h{font-family:var(--f-num);font-weight:400;font-size:19px;margin:8px 0 0;padding-top:12px;border-top:1px solid var(--line)}
 .wi-actions button{font:inherit;font-weight:700;padding:9px 16px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .wi-actions button.main{background:var(--coal);border-color:var(--coal);color:#fff}
 .seatbars{padding:14px 20px;display:grid;gap:8px;border-bottom:1px solid var(--line)}
@@ -374,16 +375,22 @@ footer a{color:inherit}
 
   <div class="panel-box" role="tabpanel" id="whatif" aria-labelledby="tab-whatif" hidden>
     <h2 class="panel-title">אילו וכאילו</h2>
-    <p class="tbl-note">מה היה קורה אילו חלק מהמצביעים של רשימה אחת היו מצביעים לרשימה אחרת? בוחרים רשימה, מעבירים אחוז מהקולות שלה לרשימה אחת או לכמה רשימות, והמנדטים מחושבים מחדש בשיטת בדר-עופר, עם אחוז חסימה 3.25% והסכמי העודפים. האחוזים הם מהקולות המקוריים של הרשימה.</p>
+    <p class="tbl-note">מה היה קורה אילו חלק מהמצביעים של רשימה אחת היו מצביעים לרשימה אחרת, או אילו רשימה הייתה מקבלת פחות או יותר מצביעים? המנדטים מחושבים מחדש בשיטת בדר-עופר, עם אחוז חסימה 3.25% והסכמי העודפים.</p>
     <div class="wi">
       <div class="seg" id="wiSeg" role="radiogroup" aria-label="הבחירות לתרחיש">
         <button type="button" role="radio" data-k="26" aria-checked="true">כנסת 26</button>
         <button type="button" role="radio" data-k="25" aria-checked="false">כנסת 25</button>
       </div>
+      <h3 class="wi-h">שינוי בכמות המצביעים</h3>
+      <p class="tbl-note" style="margin:-8px 0 0">מורידים או מוסיפים לרשימה אחוז מהמצביעים שלה, או מחזירים אותה לכמות הקולות שהייתה לה בבחירות האחרות. קולות שירדו יוצאים מהספירה, וקולות שנוספו הם מצביעים חדשים. השינוי נעשה לפני ההעברות.</p>
+      <div id="wiAdj" style="display:grid;gap:12px"></div>
+      <div class="wi-actions"><button type="button" class="main" id="wiAddAdj">+ שינוי בכמות המצביעים של רשימה</button></div>
+      <h3 class="wi-h">העברת קולות בין רשימות</h3>
+      <p class="tbl-note" style="margin:-8px 0 0">האחוזים הם מהקולות של הרשימה, אחרי השינוי בכמות המצביעים אם יש כזה.</p>
       <div id="wiMoves" style="display:grid;gap:12px"></div>
       <div class="wi-actions">
         <button type="button" class="main" id="wiAdd">+ העברה מרשימה נוספת</button>
-        <button type="button" id="wiReset">איפוס</button>
+        <button type="button" id="wiReset">איפוס הכול</button>
         <button type="button" id="wiShare">העתקת קישור לתרחיש</button>
       </div>
       <div id="wiResult"></div>
@@ -885,7 +892,19 @@ document.getElementById("kBarzel").addEventListener("keydown",e=>{ if(e.key==="E
 const SURPLUS25 = [["מחל","ט"],["פה","כן"],["שס","ג"],["אמת","מרצ"]];
 const NOVOTE = "_";  // יעד מיוחד: הקולות יוצאים מהספירה
 const newMove=()=>({from:"", dests:[{to:"", pct:10}]});
-const WI = {k:"26", s:{"26":[newMove()], "25":[newMove()]}, built26:false};
+const newAdj=()=>({party:"", mode:"down", pct:10});
+// s: העברות; a: שינויים בכמות המצביעים (down/up באחוזים, prev = כמו בבחירות האחרות)
+const WI = {k:"26", s:{"26":[newMove()], "25":[newMove()]}, a:{"26":[], "25":[]}, built26:false};
+const otherK=k=>k==="26"?"25":"26";
+
+// כמות הקולות של רשימה "כמו בבחירות האחרות", לפי שורות ההשוואה; ברשימה שהיא חלק משורה משותפת, לפי חלקה בשורה
+function wiPrevTarget(k,party){
+  const [yt,yo,vo]=k==="26"?["y26","y22",Y22.votes]:["y22","y26",state&&state.votes];
+  const row=ROWS.find(r=>r[yt].includes(party)), b=wiBase(k);
+  if(!row||!vo||!b) return null;
+  const own=sum(b.votes,row[yt]), share=own?(b.votes[party]||0)/own:1/row[yt].length;
+  return {n:Math.round(sum(vo,row[yo])*share), shared:row[yt].length>1||row[yo].length>1};
+}
 const blocOf=y=>Object.fromEntries(ROWS.flatMap(r=>r[y].map(k=>[k,r.bloc])));
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 
@@ -901,6 +920,20 @@ function wiEditor(){
   if(WI.k==="26") WI.built26=true;
   const list=Object.entries(b.votes).filter(([,n])=>n>0).sort((x,y)=>y[1]-x[1]).map(([k])=>k);
   const opts=(sel,skip)=>list.filter(k=>!skip.has(k)).map(k=>`<option value="${esc(k)}"${k===sel?" selected":""}>${esc(b.names[k]||k)}</option>`).join("");
+  const adj=WI.a[WI.k];
+  document.getElementById("wiAdj").innerHTML=adj.map((a,i)=>{
+    const used=new Set(adj.filter((_,j)=>j!==i).map(x=>x.party));
+    const mo=(v,t)=>`<option value="${v}"${a.mode===v?" selected":""}>${t}</option>`;
+    return `<div class="move" data-a="${i}">
+      <div class="move-head"><span class="lbl">הרשימה</span>
+        <select data-f="party" aria-label="הרשימה שמשתנה"><option value="">בחרו רשימה</option>${opts(a.party,used)}</select>
+        <button type="button" class="xbtn" data-act="delAdj" aria-label="הסרת השינוי">✕</button></div>
+      <div class="dest">
+        <select data-f="mode" aria-label="סוג השינוי" style="flex:0 1 220px">${mo("down","מקבלת פחות קולות")}${mo("up","מקבלת יותר קולות")}${mo("prev",`מקבלת כמו בכנסת ${otherK(WI.k)}`)}</select>
+        ${a.mode==="prev"?"":`<span class="lbl">ב-</span><input type="number" data-f="apct" min="0" max="${a.mode==="down"?100:1000}" step="0.5" inputmode="decimal" value="${a.pct}" aria-label="אחוז השינוי"><span class="lbl">%</span>`}
+      </div>
+      <div class="move-sum" id="wiAdjSum${i}"></div>
+    </div>`;}).join("");
   el.innerHTML=moves.map((m,i)=>{
     const used=new Set(moves.filter((_,j)=>j!==i).map(x=>x.from));
     return `<div class="move" data-i="${i}">
@@ -921,9 +954,21 @@ function wiEditor(){
 
 function wiCompute(){
   const b=wiBase(WI.k); if(!b) return null;
-  const v={...b.votes}; let valid=b.valid, gone=0;
+  const v={...b.votes}; let valid=b.valid, gone=0, added=0;
+  const adjs=WI.a[WI.k].map(a=>{
+    const was=b.votes[a.party]||0;
+    if(!a.party) return {was,now:was,none:false};
+    let now=was, none=false;
+    if(a.mode==="down") now=Math.round(was*(1-Math.min(100,a.pct)/100));
+    else if(a.mode==="up") now=Math.round(was*(1+a.pct/100));
+    else { const t=wiPrevTarget(WI.k,a.party); if(t) now=t.n; else none=true; }
+    v[a.party]=now; valid+=now-was;
+    if(now<was) gone+=was-now; else added+=now-was;
+    return {was,now,none,shared:a.mode==="prev"&&(wiPrevTarget(WI.k,a.party)||{}).shared};
+  });
+  const va={...v};  // הקולות אחרי השינויים בכמות המצביעים; ממנה מחושבים אחוזי ההעברה
   const sums=WI.s[WI.k].map(m=>{
-    const src=b.votes[m.from]||0, ds=m.dests.filter(d=>d.to&&d.pct>0);
+    const src=va[m.from]||0, ds=m.dests.filter(d=>d.to&&d.pct>0);
     const tot=ds.reduce((s,d)=>s+d.pct,0), f=tot>100?100/tot:1;
     let moved=0;
     if(m.from) for(const d of ds){
@@ -933,7 +978,7 @@ function wiCompute(){
     }
     return {src,tot,moved,over:tot>100};
   });
-  return {b,v,valid,gone,sums,s0:badetOfer(b.votes,b.valid,b.pairs),s1:badetOfer(v,valid,b.pairs)};
+  return {b,v,valid,gone,added,adjs,sums,s0:badetOfer(b.votes,b.valid,b.pairs),s1:badetOfer(v,valid,b.pairs)};
 }
 
 function wiResults(){
@@ -946,6 +991,15 @@ function wiResults(){
     e.textContent=!m.from?"בחרו רשימה כדי לראות כמה קולות עוברים."
       :`ל${b.names[m.from]||m.from} יש ${fmt(s.src)} קולות · מועברים ${fmt(s.moved)} קולות`+(s.over?` · סכום האחוזים ${s.tot}% עובר את 100%, ולכן כל האחוזים הוקטנו באופן יחסי`:"");
   });
+  WI.a[WI.k].forEach((a,i)=>{
+    const e=document.getElementById("wiAdjSum"+i), s=r.adjs[i]; if(!e) return;
+    e.className="move-sum num"+(s.none?" bad":"");
+    const d=s.now-s.was;
+    e.innerHTML=!a.party?"בחרו רשימה."
+      :s.none?`לרשימה הזאת אין רשימה מקבילה בכנסת ${otherK(WI.k)}, ולכן אין שינוי.`
+      :`במקור ${fmt(s.was)} קולות · בתרחיש ${fmt(s.now)} (<bdi dir="ltr">${d>0?"+":d<0?"−":""}${fmt(Math.abs(d))}</bdi>)`
+        +(s.shared?` · לפי החלק שלה ברשימה המשותפת, כמו בטבלה הראשית`:"");
+  });
 
   const gp=(d,f,eps=0)=>{const cls=d>eps?"up":d<-eps?"down":"zero";
     return `<span class="gap ${cls}"><bdi dir="ltr">${d>eps?"+":d<-eps?"−":""}${f(Math.abs(d))}</bdi></span>`;};
@@ -956,7 +1010,8 @@ function wiResults(){
   const bar=s=>`<div class="seatbar">${shown.map(x=>`<i style="width:${T[x][s]/120*100}%;background:${C[x].lite}" title="${C[x].name}: ${T[x][s]}"></i>`).join("")}</div>`;
   const cn=T.coal.b, maj=cn>=61?`לקואליציה יש רוב של ${cn} מנדטים`:`לקואליציה אין רוב: ${cn} מנדטים`;
 
-  const keys=Object.keys({...b.votes,...v}).filter(k=>s0[k]||s1[k]||k in Object.fromEntries(WI.s[WI.k].flatMap(m=>[[m.from,1],...m.dests.map(d=>[d.to,1])])))
+  const involved=new Set([...WI.s[WI.k].flatMap(m=>[m.from,...m.dests.map(d=>d.to)]),...WI.a[WI.k].map(a=>a.party)]);
+  const keys=Object.keys({...b.votes,...v}).filter(k=>s0[k]||s1[k]||involved.has(k))
     .filter(k=>k&&k!==NOVOTE).sort((x,y)=>(v[y]||0)-(v[x]||0));
   const line=(cls,name,a,c)=>`<tr class="${cls}"${c?` style="--c:${c}"`:""}><td class="name">${name}</td>
     <td class="gs v25 num">${fmt(a.va)}</td><td class="v26 num">${fmt(a.vb)}</td><td class="num">${gp(a.vb-a.va,fmt)}</td>
@@ -973,9 +1028,10 @@ function wiResults(){
   const ra=b.valid-sum(b.votes,[...ks]), rb=r.valid-sum(v,[...ks]);
   if(ra||rb) html+=line("","שאר הרשימות",row(ra,rb,null,null));
   if(r.gone) html+=line("","יצאו מהספירה (לא מצביעים)",{va:0,vb:r.gone,pa:null,pb:null,sa:null,sb:null});
+  if(r.added) html+=line("","מצביעים חדשים בתרחיש",{va:0,vb:r.added,pa:null,pb:null,sa:null,sb:null});
   html+=line("grand","סך הכול הקולות הכשרים",{va:b.valid,vb:r.valid,pa:100,pb:100,sa:120,sb:120});
 
-  const changed=r.sums.some(s=>s.moved>0);
+  const changed=r.sums.some(s=>s.moved>0)||r.adjs.some(s=>s.now!==s.was);
   el.innerHTML=`<div class="place" style="margin-top:4px">
     <div class="place-head"><h3>${changed?"התוצאה בתרחיש":"התוצאה בלי שינוי"}</h3>
       <span class="meta">${WI.k==="26"?"כנסת 26, לפי הקולות שנספרו עד עכשיו":"כנסת 25, התוצאה הסופית"} · ${maj}</span></div>
@@ -1015,23 +1071,38 @@ function wiResults(){
     if(act==="delMove") WI.s[WI.k].splice(i,1);
     wiEditor();
   });
+  const adjEl=document.getElementById("wiAdj"), adjAt=e=>{const c=e.target.closest("[data-a]"); return c?{a:WI.a[WI.k][+c.dataset.a], i:+c.dataset.a}:{};};
+  adjEl.addEventListener("input",e=>{
+    if(e.target.dataset.f!=="apct") return;
+    const {a}=adjAt(e); a.pct=Math.max(0,Math.min(a.mode==="down"?100:1000,parseFloat(e.target.value)||0)); wiResults();
+  });
+  adjEl.addEventListener("change",e=>{
+    const {a}=adjAt(e), f=e.target.dataset.f; if(!a) return;
+    if(f==="party"){ a.party=e.target.value; wiEditor(); }
+    else if(f==="mode"){ a.mode=e.target.value; if(a.mode==="down") a.pct=Math.min(a.pct,100); wiEditor(); }
+  });
+  adjEl.addEventListener("click",e=>{ if(e.target.dataset.act==="delAdj"){ WI.a[WI.k].splice(adjAt(e).i,1); wiEditor(); } });
+  document.getElementById("wiAddAdj").addEventListener("click",()=>{ WI.a[WI.k].push(newAdj()); wiEditor(); });
   document.getElementById("wiSeg").addEventListener("click",e=>{const b=e.target.closest("button"); if(b){ WI.k=b.dataset.k; wiEditor(); }});
   document.getElementById("wiAdd").addEventListener("click",()=>{ WI.s[WI.k].push(newMove()); wiEditor(); });
-  document.getElementById("wiReset").addEventListener("click",()=>{ WI.s[WI.k]=[newMove()]; wiEditor(); });
+  document.getElementById("wiReset").addEventListener("click",()=>{ WI.s[WI.k]=[newMove()]; WI.a[WI.k]=[]; wiEditor(); });
   document.getElementById("wiShare").addEventListener("click",async e=>{
-    const data={k:WI.k, m:WI.s[WI.k].filter(m=>m.from).map(m=>[m.from,m.dests.filter(d=>d.to).map(d=>[d.to,d.pct])])};
+    const data={k:WI.k, m:WI.s[WI.k].filter(m=>m.from).map(m=>[m.from,m.dests.filter(d=>d.to).map(d=>[d.to,d.pct])]),
+      a:WI.a[WI.k].filter(a=>a.party).map(a=>[a.party,a.mode,a.pct])};
     const url=location.origin+location.pathname+"?wi="+encodeURIComponent(JSON.stringify(data))+"#whatif";
     history.replaceState(null,"",url);
     let ok=true; try{ await navigator.clipboard.writeText(url); }catch(err){ ok=false; }
     e.target.textContent=ok?"הקישור הועתק":"הקישור בשורת הכתובת";
     setTimeout(()=>{ e.target.textContent="העתקת קישור לתרחיש"; },2500);
   });
-  // קישור לתרחיש: ?wi={"k":"26","m":[[מאיפה,[[לאן,אחוז],...]],...]}
+  // קישור לתרחיש: ?wi={"k":"26","m":[[מאיפה,[[לאן,אחוז],...]],...],"a":[[רשימה,down|up|prev,אחוז],...]}
   try{
     const q=new URLSearchParams(location.search).get("wi");
     if(q){ const d=JSON.parse(q); if(d.k==="25"||d.k==="26"){ WI.k=d.k;
       const ms=(d.m||[]).map(([from,ds])=>({from:String(from), dests:(ds||[]).map(([to,p])=>({to:String(to), pct:Math.max(0,Math.min(100,+p||0))}))})).filter(m=>m.dests.length);
-      if(ms.length) WI.s[d.k]=ms; } }
+      if(ms.length) WI.s[d.k]=ms;
+      WI.a[d.k]=(d.a||[]).filter(([,mode])=>["down","up","prev"].includes(mode))
+        .map(([party,mode,p])=>({party:String(party), mode, pct:Math.max(0,Math.min(mode==="down"?100:1000,+p||0))})); } }
   }catch(e){}
   wiEditor();
 }
