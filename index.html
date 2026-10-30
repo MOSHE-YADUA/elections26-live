@@ -268,7 +268,7 @@ footer a{color:inherit}
     <div class="count-bar" title="אחוז הקלפיות שנספרו"><i id="bar"></i></div>
 
     <div class="chambers">
-      <div class="chamber"><svg id="ch26" role="img" aria-label="מליאת כנסת 26"></svg><div class="tag">כנסת 26 · בספירה</div></div>
+      <div class="chamber"><svg id="ch26" role="img" aria-label="מליאת כנסת 26"></svg><div class="tag">כנסת 26 · תוצאה סופית</div></div>
       <div class="chamber past"><svg id="ch25" role="img" aria-label="מליאת כנסת 25"></svg><div class="tag">כנסת 25 · תוצאה סופית</div></div>
     </div>
     <div class="legend">
@@ -308,7 +308,7 @@ footer a{color:inherit}
 
   <div class="panel-box" role="tabpanel" id="all" aria-labelledby="tab-all">
     <h2 class="panel-title">כל המספרים: כנסת 26 מול כנסת 25</h2>
-    <p class="tbl-note">בכל מדד: כנסת 26, כנסת 25, והפער ביניהן. הקולות של כנסת 26 הם מהקלפיות שנספרו עד עכשיו, ולכן הפער בקולות עוד יגדל עם סיום הספירה.</p>
+    <p class="tbl-note">בכל מדד: כנסת 26, כנסת 25, והפער ביניהן.</p>
     <div class="tbl-wrap">
       <table>
         <thead>
@@ -402,7 +402,7 @@ footer a{color:inherit}
   <footer>
     <div id="foot"></div>
     <div>מקור כנסת 26: תוצאות <a href="https://votes26.bechirot.gov.il/nationalresults?lang=he" target="_blank" rel="noopener">ועדת הבחירות המרכזית</a>, דרך <a href="https://github.com/navonyaniv/election-il-2026" target="_blank" rel="noopener">קובץ הנתונים הפתוח election-il-2026</a>, ולצידו עותק של <a href="https://elections.govmap.gov.il/" target="_blank" rel="noopener">GovMap</a>, מפת הבחירות הממשלתית. הדף מציג תמיד את העדכני מביניהם. מקור כנסת 25: תוצאות הקלפיות הרשמיות.</div>
-    <div>המנדטים של כנסת 26 מחושבים בדף לפי שיטת בדר-עופר, אחוז חסימה 3.25% והסכמי העודפים שפורסמו. הקולות של כנסת 26 הם מהקלפיות שנספרו עד עכשיו; האחוזים כבר ברי השוואה. עד פרסום התוצאות הרשמיות ברשומות התוצאות עלולות להשתנות.</div>
+    <div>המנדטים של כנסת 26 מחושבים בדף לפי שיטת בדר-עופר, אחוז חסימה 3.25% והסכמי העודפים שפורסמו. התוצאות הרשמיות הן אלה שמתפרסמות ברשומות.</div>
   </footer>
 </main>
 
@@ -583,7 +583,7 @@ function render(r){
         </div>
         <div class="rowbar"><span class="lab">כנסת 26</span><div class="track"><i style="width:${ss26/maxSeats*100}%"></i></div><span class="seatnum num">${ss26}<small>${p1(pv26)}</small></span></div>
         <div class="rowbar past"><span class="lab">כנסת 25</span><div class="track past"><i style="width:${ss22/maxSeats*100}%"></i></div><span class="seatnum num">${ss22}<small>${p1(pv22)}</small></span></div>
-        <div class="card-foot">${parts||`<span>${fmt(sum(v26,row.y26))} קולות עד עכשיו</span>`}${delta(ss26-ss22)}</div>
+        <div class="card-foot">${parts||`<span>${fmt(sum(v26,row.y26))} קולות</span>`}${delta(ss26-ss22)}</div>
       </article>`;
     }
     cards+=`</div>`;
@@ -597,7 +597,7 @@ function render(r){
       <circle cx="55" cy="55" r="44" fill="none" stroke="${c}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${L} ${C}" transform="rotate(-90 55 55)" ${past?'opacity=".55"':''}/></svg>`;};
   document.getElementById("turn").innerHTML=`
     <div class="gauge">${ring(t26,"var(--coal)")}<div><div class="t">כנסת 26</div><div class="v num">${t26?p1(t26):"—"}</div>
-      <div class="s">${t26?deltaPct(t26-t22):""} · ${fmt(voters)} מצביעים נספרו מתוך ${fmt(bzb)} בעלי זכות</div></div></div>
+      <div class="s">${t26?deltaPct(t26-t22):""} · ${fmt(voters)} מצביעים מתוך ${fmt(bzb)} בעלי זכות</div></div></div>
     <div class="gauge">${ring(t22,"var(--muted)",true)}<div><div class="t">כנסת 25</div><div class="v num">${p1(t22)}</div>
       <div class="s">${fmt(Y22.voters)} מצביעים מתוך ${fmt(Y22.bzb)} בעלי זכות</div></div></div>`;
 
@@ -612,7 +612,7 @@ function render(r){
     </div>`;
   document.getElementById("seatPrice").innerHTML=
     priceCard("כנסת 26",price26,passed26,valid)+priceCard("כנסת 25",price25,passed25,Y22.valid,true)+
-    `<p class="price-note">מנדט בכנסת 26 עולה עד עכשיו <span class="gap ${dp>0?"up":dp<0?"down":"zero"}"><bdi dir="ltr">${dp>0?"+":dp<0?"−":""}${fmt(Math.abs(dp))}</bdi></span> קולות לעומת כנסת 25. המספר של כנסת 26 עוד יעלה עד סוף הספירה.</p>`;
+    `<p class="price-note">מנדט בכנסת 26 עולה <span class="gap ${dp>0?"up":dp<0?"down":"zero"}"><bdi dir="ltr">${dp>0?"+":dp<0?"−":""}${fmt(Math.abs(dp))}</bdi></span> קולות לעומת כנסת 25.</p>`;
 
   // טבלה
   // פער בסימן מפורש; כיוון LTR כדי שהסימן יופיע לפני המספר
@@ -1034,7 +1034,7 @@ function wiResults(){
   const changed=r.sums.some(s=>s.moved>0)||r.adjs.some(s=>s.now!==s.was);
   el.innerHTML=`<div class="place" style="margin-top:4px">
     <div class="place-head"><h3>${changed?"התוצאה בתרחיש":"התוצאה בלי שינוי"}</h3>
-      <span class="meta">${WI.k==="26"?"כנסת 26, לפי הקולות שנספרו עד עכשיו":"כנסת 25, התוצאה הסופית"} · ${maj}</span></div>
+      <span class="meta">${WI.k==="26"?"כנסת 26, התוצאה הסופית":"כנסת 25, התוצאה הסופית"} · ${maj}</span></div>
     <div class="mini-blocs"${shown.length>3?` style="grid-template-columns:repeat(${shown.length},minmax(0,1fr))"`:""}>${shown.map(x=>{const t=T[x];
       return `<div class="mb" style="--c:${C[x].c}"><div class="t">${C[x].name}</div>
         <div class="pp num">${t.b} <small>מנדטים · במקור ${t.a}</small> ${delta(t.b-t.a)}</div>
