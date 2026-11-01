@@ -141,14 +141,16 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 /* ---------- טבלה מלאה ---------- */
 .explore{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
 .explore>*{min-width:0}
-.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:0 8px 20px -14px rgba(11,22,51,.5)}
+.tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:0 8px 20px -14px rgba(11,22,51,.5)}
 .tabs button{font:inherit;font-family:var(--f-num);font-size:17px;padding:11px 8px;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
 .tabs button:hover{color:var(--ink);background:color-mix(in srgb,var(--line) 50%,transparent)}
 .tabs button[aria-selected="true"]{background:var(--night);color:#fff}
 .tabs button:focus-visible{outline:2px solid var(--coal);outline-offset:2px}
+[role=tabpanel]{scroll-margin-top:84px}
+@media (max-width:640px){[role=tabpanel]{scroll-margin-top:176px}}
 .panel-box{background:var(--surface);border:1px solid var(--line);border-radius:12px}
 .panel-title{font-family:var(--f-num);font-weight:400;font-size:20px;padding:16px 20px 6px}
-@media (max-width:640px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.tabs button{font-size:15px;padding:10px 4px}.tabs button:last-child{grid-column:span 2}}
+@media (max-width:640px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.tabs button{font-size:15px;padding:10px 4px}}
 .tbl-wrap{overflow:auto;max-height:78vh;padding:0 20px 18px}
 .tbl-wrap thead th{position:sticky;top:0;z-index:2}
 .tbl-wrap thead tr:first-child th{height:42px}
@@ -205,6 +207,44 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 .empty{padding:18px 20px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:12px;margin-top:16px}
 @media (max-width:760px){.mini-blocs{grid-template-columns:1fr}.mb{border-inline-start:0;border-top:1px solid var(--line)}.mb:first-child{border-top:0}.finder input,.finder select{min-width:0;width:100%}.kalpi-finder>div{flex:1 1 100%}}
 .tbl-note{font-size:13px;color:var(--muted);margin:0 20px 12px}
+/* ---------- בוא נקים ממשלה ---------- */
+.gov{padding:0 20px 18px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.gov>*{min-width:0}
+.gov-tools{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.gov-tools input[type=search]{font:inherit;font-size:16px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);flex:1 1 220px;min-width:0;max-width:340px}
+.gov-tools label{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer}
+.gov-bloc{font-family:var(--f-num);font-size:18px;color:var(--c);border-bottom:2px solid var(--c);padding-bottom:4px;margin-top:8px}
+.gov-party{display:grid;gap:10px}
+.gov-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.gov-head h3{font-family:var(--f-num);font-weight:400;font-size:19px;display:flex;align-items:center;gap:8px}
+.gov-head h3::before{content:"";width:12px;height:12px;border-radius:3px;background:var(--pc)}
+.gov-head .cnt{font-size:13px;color:var(--muted)}
+.gov-head button,.gov-actions button{font:inherit;font-size:14px;font-weight:700;padding:7px 13px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.gov-head button{margin-inline-start:auto}
+.mk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(102px,1fr));gap:10px}
+.mk{--pr:var(--pc);font:inherit;position:relative;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);color:var(--ink);cursor:pointer;text-align:center;display:flex;flex-direction:column;min-width:0}
+.mk img,.mk .ph{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;object-position:top;background:var(--line)}
+.mk .ph{display:flex;align-items:center;justify-content:center;font-family:var(--f-num);font-size:30px;color:#fff;background:var(--pc)}
+.mk .nm{font-size:13px;font-weight:700;line-height:1.25;padding:6px 4px 2px}
+.mk .pos{font-size:11px;color:var(--muted);padding-bottom:6px;margin-top:auto}
+.mk:hover{border-color:var(--pr)}
+.mk:focus-visible,.gov button:focus-visible,.gov input:focus-visible{outline:2px solid var(--coal);outline-offset:2px}
+.mk[aria-pressed="true"]{border-color:var(--pr);box-shadow:0 0 0 2px var(--pr);background:color-mix(in srgb,var(--pc) 14%,var(--surface))}
+.mk .tick{display:none;position:absolute;top:5px;inset-inline-end:5px;width:24px;height:24px;border-radius:50%;background:var(--pc);border:2px solid #fff;color:#fff;font-size:13px;line-height:20px;font-weight:800}
+.mk[aria-pressed="true"] .tick{display:block}
+@media (prefers-color-scheme:dark){.mk{--pr:color-mix(in srgb,var(--pc) 55%,#fff)}}
+.gov-bar{position:sticky;bottom:0;z-index:4;display:grid;gap:8px;padding:12px 20px;background:var(--surface);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 -8px 18px -14px rgba(11,22,51,.5)}
+.gov-sum{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.gov-sum b{font-family:var(--f-num);font-weight:400;font-size:26px;line-height:1}
+.gov-sum .st{font-weight:700;font-size:14px;color:var(--muted)}
+.gov-sum .st.ok{color:var(--up)}
+.gov-actions{display:flex;flex-wrap:wrap;gap:6px}
+.gov-actions button.main{background:var(--coal);border-color:var(--coal);color:#fff}
+.gov-actions button:disabled{opacity:.5;cursor:default}
+.gov-credits{font-size:12px;color:var(--muted)}
+.gov-credits summary{cursor:pointer;font-weight:700}
+.gov-credits ul{margin:8px 0 0;padding-inline-start:18px;display:grid;gap:2px}
+.gov-credits a{color:inherit}
 /* ---------- אילו וכאילו ---------- */
 .wi{padding:0 20px 20px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
 .wi>*{min-width:0}
@@ -304,6 +344,7 @@ footer a{color:inherit}
     <button type="button" role="tab" id="tab-kalpi" data-tab="kalpi" aria-controls="kalpi" aria-selected="false">קלפי מול קלפי</button>
     <button type="button" role="tab" id="tab-k24" data-tab="k24" aria-controls="k24" aria-selected="false">לפי גושי כנסת 24</button>
     <button type="button" role="tab" id="tab-whatif" data-tab="whatif" aria-controls="whatif" aria-selected="false">אילו וכאילו</button>
+    <button type="button" role="tab" id="tab-gov" data-tab="gov" aria-controls="gov" aria-selected="false">בוא נקים ממשלה</button>
   </div>
 
   <div class="panel-box" role="tabpanel" id="all" aria-labelledby="tab-all">
@@ -394,6 +435,21 @@ footer a{color:inherit}
         <button type="button" id="wiShare">העתקת קישור לתרחיש</button>
       </div>
       <div id="wiResult"></div>
+    </div>
+  </div>
+
+  <div class="panel-box" role="tabpanel" id="gov" aria-labelledby="tab-gov" hidden>
+    <h2 class="panel-title">בוא נקים ממשלה</h2>
+    <p class="tbl-note">מכניסים לממשלה רשימה שלמה או ח"כים בודדים, עד שמגיעים ל-61. הרשימה היא של חברי הכנסת שצפויים לכהן עם השבעת הכנסת ב-10 בנובמבר 2026, לפי ויקיפדיה, ועשויה להשתנות.</p>
+    <div class="gov" id="govBody"><div class="empty" style="margin:0">טוען את חברי הכנסת…</div></div>
+    <div class="gov-bar" id="govBar" hidden>
+      <div class="gov-sum"><b class="num" id="govCount">0</b><span>מתוך 120 בממשלה</span><span class="st" id="govStatus"></span></div>
+      <div class="seatbar" id="govSeats" role="img"></div>
+      <div class="gov-actions">
+        <button type="button" class="main" id="govLinkMine">קישור לממשלה שבניתי</button>
+        <button type="button" id="govLinkPage">קישור ישיר לדף</button>
+        <button type="button" id="govReset">איפוס</button>
+      </div>
     </div>
   </div>
   </section>
@@ -1107,7 +1163,126 @@ function wiResults(){
   wiEditor();
 }
 
+// ---------- בוא נקים ממשלה ----------
+// סדר הח"כים ב-data/mks.json קבוע: הקישור לממשלה הוא מפת סיביות לפי המיקום ברשימה הזאת
+const GOV_COLORS = {"מחל":"#1F5AA5","דרך":"#2b8fd6","רק":"#2a2a78","ודם":"#04939f","אמת":"#2535D8","עם":"#297C32","ל":"#4f8fbd","ב":"#d9401a","ג":"#122D70","שס":"#3a3a3a","ט":"#083D7B"};
+const GOV = {mks:null, sel:new Set(), loading:null};
+
+function govEncode(){
+  const b=new Uint8Array(15); for(const i of GOV.sel) b[i>>3]|=1<<(i&7);
+  return btoa(String.fromCharCode(...b)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function govDecode(c){
+  const out=new Set();
+  try{
+    if(!/^[\w-]{20}$/.test(c)) return out;
+    const b=atob(c.replace(/-/g,"+").replace(/_/g,"/"));
+    for(let i=0;i<120;i++) if(b.charCodeAt(i>>3)&(1<<(i&7))) out.add(i);
+  }catch(e){}
+  return out;
+}
+const govPage=()=>location.origin+location.pathname+"#gov";
+const govMine=()=>location.origin+location.pathname+"?gov="+govEncode()+"#gov";
+
+function govInit(){
+  if(!GOV.loading) GOV.loading=getJson("data/mks.json").then(m=>{
+    GOV.mks=m;
+    GOV.sel=govDecode(new URLSearchParams(location.search).get("gov")||"");
+    govRender();
+  }).catch(e=>{
+    GOV.loading=null;
+    document.getElementById("govBody").innerHTML=`<div class="empty" style="margin:0">לא הצלחתי לטעון את רשימת חברי הכנסת. רעננו את הדף ונסו שוב.</div>`;
+  });
+  return GOV.loading;
+}
+
+function govRender(){
+  const bl=blocOf("y26"), byList={};
+  for(const m of GOV.mks) (byList[m.l]=byList[m.l]||[]).push(m);
+  const card=m=>{
+    const init=m.n.split(/\s+/).slice(0,2).map(w=>w[0]).join("");
+    return `<button type="button" class="mk" data-i="${m.i}" aria-pressed="${GOV.sel.has(m.i)}" style="--pc:${GOV_COLORS[m.l]}">
+      ${m.img?`<img src="data/mk/${m.img}" alt="" loading="lazy" width="250" height="250">`:`<span class="ph" aria-hidden="true">${esc(init)}</span>`}
+      <span class="tick" aria-hidden="true">✓</span><span class="nm">${esc(m.n)}</span><span class="pos num">מקום ${m.p}</span></button>`;};
+  let html=`<div class="gov-tools"><input type="search" id="govSearch" placeholder="חיפוש ח״כ לפי שם" aria-label="חיפוש חבר כנסת"><label><input type="checkbox" id="govOnly">רק מי שבממשלה</label></div>`;
+  for(const b of ["coal","opp","arab"]){
+    html+=`<div class="gov-bloc" style="--c:${BLOCS[b].c}" data-bloc>${BLOCS[b].name}</div>`;
+    for(const k of Object.keys(byList).filter(k=>bl[k]===b).sort((x,y)=>byList[y].length-byList[x].length)){
+      html+=`<section class="gov-party" data-list="${esc(k)}" style="--pc:${GOV_COLORS[k]}">
+        <div class="gov-head"><h3>${esc(NAMES26[k]||k)}</h3><span class="cnt num"></span><button type="button" data-all="${esc(k)}"></button></div>
+        <div class="mk-grid">${byList[k].map(card).join("")}</div></section>`;
+    }
+  }
+  const cr=GOV.mks.filter(m=>m.img).map(m=>`<li>${esc(m.n)}: <a href="${esc(m.src)}" target="_blank" rel="noopener">${esc(m.a||"ויקישיתוף")}</a>, ${m.lu?`<a href="${esc(m.lu)}" target="_blank" rel="noopener">${esc(m.lic)}</a>`:esc(m.lic)}</li>`).join("");
+  const noPic=GOV.mks.filter(m=>!m.img).length;
+  html+=`<details class="gov-credits"><summary>קרדיט לתמונות (ויקיפדיה וויקישיתוף)</summary><p>התמונות הוקטנו ונחתכו לתצוגה. ל-${noPic} ח"כים לא נמצאה תמונה ברישיון חופשי, ולכן מוצגות ראשי התיבות שלהם.</p><ul>${cr}</ul></details>`;
+  document.getElementById("govBody").innerHTML=html;
+  document.getElementById("govBar").hidden=false;
+  document.getElementById("govSearch").addEventListener("input",govFilter);
+  document.getElementById("govOnly").addEventListener("change",govFilter);
+  govUpdate();
+}
+
+function govFilter(){
+  const q=document.getElementById("govSearch").value.trim(), only=document.getElementById("govOnly").checked;
+  for(const c of document.querySelectorAll("#govBody .mk")){
+    const m=GOV.mks[+c.dataset.i];
+    c.hidden=(q&&!m.n.includes(q))||(only&&!GOV.sel.has(m.i));
+  }
+  for(const p of document.querySelectorAll("#govBody .gov-party")) p.hidden=!p.querySelector(".mk:not([hidden])");
+  for(const h of document.querySelectorAll("#govBody [data-bloc]")){
+    let n=h.nextElementSibling, any=false;
+    while(n&&n.classList.contains("gov-party")){ if(!n.hidden) any=true; n=n.nextElementSibling; }
+    h.hidden=!any;
+  }
+}
+
+function govUpdate(){
+  const counts={}, totals={};
+  for(const m of GOV.mks){ totals[m.l]=(totals[m.l]||0)+1; if(GOV.sel.has(m.i)) counts[m.l]=(counts[m.l]||0)+1; }
+  for(const c of document.querySelectorAll("#govBody .mk")) c.setAttribute("aria-pressed",GOV.sel.has(+c.dataset.i));
+  for(const p of document.querySelectorAll("#govBody .gov-party")){
+    const k=p.dataset.list, n=counts[k]||0, t=totals[k];
+    p.querySelector(".cnt").textContent=`${n} מתוך ${t} בממשלה`;
+    p.querySelector("[data-all]").textContent=n===t?"להוציא את כל הרשימה":"להכניס את כל הרשימה";
+  }
+  const n=GOV.sel.size, st=document.getElementById("govStatus");
+  document.getElementById("govCount").textContent=n;
+  st.textContent=!n?"בחרו רשימה או ח\"כ כדי להתחיל":n>=61?`יש רוב! ${n-61?`${n-61} מעל ל-61`:"בדיוק 61"}`:`חסרים ${61-n} ל-61`;
+  st.className="st"+(n>=61?" ok":"");
+  const seats=document.getElementById("govSeats"), keys=Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
+  seats.innerHTML=keys.map(k=>`<i style="width:${counts[k]/120*100}%;background:${GOV_COLORS[k]}" title="${esc(NAMES26[k]||k)}: ${counts[k]}"></i>`).join("");
+  seats.setAttribute("aria-label",`${n} מתוך 120 מושבים. הקו מסמן 61.`);
+  document.getElementById("govLinkMine").disabled=!n;
+  if(document.getElementById("govOnly").checked) govFilter();
+}
+
+async function govCopy(btn,url,label){
+  let ok=true; try{ await navigator.clipboard.writeText(url); }catch(e){ ok=false; }
+  if(!ok) history.replaceState(null,"",url);
+  btn.textContent=ok?"הקישור הועתק":"הקישור בשורת הכתובת";
+  setTimeout(()=>{ btn.textContent=label; },2500);
+}
+document.getElementById("govBody").addEventListener("click",e=>{
+  if(!GOV.mks) return;
+  const all=e.target.closest("[data-all]"), c=e.target.closest(".mk");
+  if(all){
+    const ids=GOV.mks.filter(m=>m.l===all.dataset.all).map(m=>m.i), full=ids.every(i=>GOV.sel.has(i));
+    for(const i of ids) if(full) GOV.sel.delete(i); else GOV.sel.add(i);
+  }else if(c){
+    const i=+c.dataset.i; if(GOV.sel.has(i)) GOV.sel.delete(i); else GOV.sel.add(i);
+  }else return;
+  govUpdate();
+});
+document.getElementById("govLinkMine").addEventListener("click",e=>govCopy(e.target,govMine(),"קישור לממשלה שבניתי"));
+document.getElementById("govLinkPage").addEventListener("click",e=>govCopy(e.target,govPage(),"קישור ישיר לדף"));
+document.getElementById("govReset").addEventListener("click",()=>{
+  GOV.sel.clear(); govUpdate();
+  if(new URLSearchParams(location.search).has("gov")) history.replaceState(null,"",govPage());
+});
+
 function selectTab(name){
+  if(name==="gov") govInit();
   for(const b of document.querySelectorAll(".tabs [role=tab]")){
     const on=b.dataset.tab===name; b.setAttribute("aria-selected",on); b.tabIndex=on?0:-1;
     document.getElementById(b.dataset.tab).hidden=!on;
@@ -1120,7 +1295,7 @@ document.querySelector(".tabs").addEventListener("keydown",e=>{
   const n=tabs[(i+(e.key==="ArrowLeft"?1:-1)+tabs.length)%tabs.length]; n.focus(); n.click();
 });
 { const h=location.hash.slice(1), q=new URLSearchParams(location.search);
-  if(q.get("kalpi")||h==="kalpi") selectTab("kalpi"); else if(q.get("city")||h==="cities") selectTab("cities"); else if(h==="k24") selectTab("k24"); else if(q.get("wi")||h==="whatif") selectTab("whatif"); }
+  if(h==="gov"||(q.get("gov")&&!h)) selectTab("gov"); else if(q.get("kalpi")||h==="kalpi") selectTab("kalpi"); else if(q.get("city")||h==="cities") selectTab("cities"); else if(h==="k24") selectTab("k24"); else if(q.get("wi")||h==="whatif") selectTab("whatif"); }
 
 async function initPlaces(){
   try{ T25=await getJson("data/t25.json"); renderCities(); }catch(e){}
