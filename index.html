@@ -141,16 +141,16 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 /* ---------- טבלה מלאה ---------- */
 .explore{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
 .explore>*{min-width:0}
-.tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:0 8px 20px -14px rgba(11,22,51,.5)}
-.tabs button{font:inherit;font-family:var(--f-num);font-size:17px;padding:11px 8px;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
+.tabs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:0 8px 20px -14px rgba(11,22,51,.5)}
+.tabs button{font:inherit;font-family:var(--f-num);font-size:16px;padding:11px 8px;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
 .tabs button:hover{color:var(--ink);background:color-mix(in srgb,var(--line) 50%,transparent)}
 .tabs button[aria-selected="true"]{background:var(--night);color:#fff}
 .tabs button:focus-visible{outline:2px solid var(--coal);outline-offset:2px}
 [role=tabpanel]{scroll-margin-top:84px}
-@media (max-width:640px){[role=tabpanel]{scroll-margin-top:176px}}
+@media (max-width:640px){[role=tabpanel]{scroll-margin-top:70px}}
 .panel-box{background:var(--surface);border:1px solid var(--line);border-radius:12px}
 .panel-title{font-family:var(--f-num);font-weight:400;font-size:20px;padding:16px 20px 6px}
-@media (max-width:640px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.tabs button{font-size:15px;padding:10px 4px}}
+@media (max-width:640px){.tabs{display:flex;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tabs button{flex:0 0 auto;white-space:nowrap;font-size:15px;padding:10px 14px}}
 .tbl-wrap{overflow:auto;max-height:78vh;padding:0 20px 18px}
 .tbl-wrap thead th{position:sticky;top:0;z-index:2}
 .tbl-wrap thead tr:first-child th{height:42px}
@@ -207,6 +207,22 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 .empty{padding:18px 20px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:12px;margin-top:16px}
 @media (max-width:760px){.mini-blocs{grid-template-columns:1fr}.mb{border-inline-start:0;border-top:1px solid var(--line)}.mb:first-child{border-top:0}.finder input,.finder select{min-width:0;width:100%}.kalpi-finder>div{flex:1 1 100%}}
 .tbl-note{font-size:13px;color:var(--muted);margin:0 20px 12px}
+/* ---------- קולות חרדים ---------- */
+.hr{padding:0 20px 18px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.hr>*{min-width:0}
+.hr .mini-blocs{border:1px solid var(--line);border-radius:12px}
+.hr-bar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end}
+.hr-bar>div{display:grid;gap:4px;min-width:0}
+.hr-bar label{font-size:13px;font-weight:700;color:var(--muted)}
+.hr-bar select,.hr-bar input[type=search]{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);max-width:100%}
+.hr-bar .chk{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;padding-bottom:8px}
+.hr-bar select:focus-visible,.hr-bar input:focus-visible,.hr button:focus-visible{outline:2px solid var(--coal);outline-offset:1px}
+.hr-sum{font-size:14px;color:var(--muted)}
+.hr-sum b{color:var(--ink)}
+.hr-warn{font-size:13px;padding:10px 14px;border-radius:8px;background:color-mix(in srgb,var(--down) 10%,var(--surface));color:var(--ink);border:1px solid color-mix(in srgb,var(--down) 30%,var(--line))}
+.tsub.warn{color:var(--down)}
+.hr-more{justify-self:center;font:inherit;font-weight:700;padding:9px 18px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+@media (max-width:760px){.hr-bar>div{flex:1 1 100%}}
 /* ---------- בוא נקים ממשלה ---------- */
 .gov{padding:0 20px 18px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
 .gov>*{min-width:0}
@@ -345,6 +361,7 @@ footer a{color:inherit}
     <button type="button" role="tab" id="tab-k24" data-tab="k24" aria-controls="k24" aria-selected="false">לפי גושי כנסת 24</button>
     <button type="button" role="tab" id="tab-whatif" data-tab="whatif" aria-controls="whatif" aria-selected="false">אילו וכאילו</button>
     <button type="button" role="tab" id="tab-gov" data-tab="gov" aria-controls="gov" aria-selected="false">בוא נקים ממשלה</button>
+    <button type="button" role="tab" id="tab-haredi" data-tab="haredi" aria-controls="haredi" aria-selected="false">קולות חרדים</button>
   </div>
 
   <div class="panel-box" role="tabpanel" id="all" aria-labelledby="tab-all">
@@ -436,6 +453,12 @@ footer a{color:inherit}
       </div>
       <div id="wiResult"></div>
     </div>
+  </div>
+
+  <div class="panel-box" role="tabpanel" id="haredi" aria-labelledby="tab-haredi" hidden>
+    <h2 class="panel-title">קולות חרדים</h2>
+    <p class="tbl-note">איפה ש"ס ויהדות התורה איבדו קולות ואיפה הוסיפו, כנסת 26 מול כנסת 25, לפי יישוב או לפי קלפי. השינוי הוא בקולות, לא באחוזים.</p>
+    <div class="hr" id="hrBody"><div class="empty" style="margin:0">טוען…</div></div>
   </div>
 
   <div class="panel-box" role="tabpanel" id="gov" aria-labelledby="tab-gov" hidden>
@@ -1163,6 +1186,154 @@ function wiResults(){
   wiEditor();
 }
 
+// ---------- קולות חרדים: ש"ס ויהדות התורה, כנסת 26 מול כנסת 25 ----------
+const KALPI26_PARTIES = "https://mosheyadua.cu.ma/elections26/kalpi26_parties.php";  // ראו server/kalpi26_parties.php
+const HR = {loading:null, rows:{}, view:"town", shown:200, K26P:null, REG:null};
+const HR_PAGE = 200;
+
+function hrInit(){
+  if(!HR.loading) HR.loading=(async()=>{
+    const [k25,k26p,reg]=await Promise.all([ensureK25(), getJson(KALPI26_PARTIES+"?p="+encodeURIComponent("שס,ג")).catch(()=>null), getJson("data/regions.json")]);
+    if(!T25) T25=await getJson("data/t25.json");
+    HR.nat=state?state.votes:null;
+    if(!TOWNS26||!HR.nat){ const m=fromMirror(await getJson(FEED_MIRROR)); TOWNS26=TOWNS26||m.towns; HR.nat=HR.nat||m.votes; }
+    HR.K26P=k26p; HR.REG=reg;
+    hrBuild(); hrShell(); hrRender();
+  })().catch(e=>{
+    HR.loading=null;
+    document.getElementById("hrBody").innerHTML=`<div class="empty" style="margin:0">לא הצלחתי לטעון את הנתונים. רעננו את הדף ונסו שוב.</div>`;
+  });
+  return HR.loading;
+}
+
+// שורה: {code, k?, s26, s25, g26, g25, b26, b25}
+function hrBuild(){
+  const town=[];
+  for(const c of Object.keys(T25)){
+    const a=town26(c); if(!a) continue;
+    const v=T25[c][5];
+    town.push({code:c, s26:a.v["שס"]||0, s25:v["שס"]||0, g26:a.v["ג"]||0, g25:v["ג"]||0, b26:a.bzb, b25:T25[c][1]});
+  }
+  const kalpi=[]; let k26n=0;
+  if(HR.K26P&&HR.K26P.available){
+    const [is,ig]=[4+HR.K26P.parties.indexOf("שס"), 4+HR.K26P.parties.indexOf("ג")];
+    for(const [c,t] of Object.entries(HR.K26P.towns)) for(const [k,r] of Object.entries(t)){
+      k26n++;
+      const o=K25[c]&&K25[c].k[k]; if(!o) continue;
+      kalpi.push({code:c, k, bar:r[0], s26:r[is]||0, s25:o[5]["שס"]||0, g26:r[ig]||0, g25:o[5]["ג"]||0, b26:r[1], b25:o[1]});
+    }
+  }
+  for(const r of [...town,...kalpi]){ r.ds=r.s26-r.s25; r.dg=r.g26-r.g25; r.dt=r.ds+r.dg; r.odd=r.b25&&(r.b26/r.b25<0.8||r.b26/r.b25>1.25); }
+  HR.rows={town,kalpi}; HR.k26n=k26n;
+}
+
+function hrShell(){
+  const n26=HR.nat, nat=(k26,k25)=>({d:k26-k25,a:k26,b:k25});
+  const S=nat(n26["שס"]||0,Y22.votes["שס"]), G=nat(n26["ג"]||0,Y22.votes["ג"]), T={d:S.d+G.d,a:S.a+G.a,b:S.b+G.b};
+  const card=(t,x)=>`<div class="mb" style="--c:var(--coal)"><div class="t">${t}</div>
+    <div class="pp num">${hrGap(x.d)} <small>קולות</small></div><div class="vv num">${fmt(x.a)} בכנסת 26 מול ${fmt(x.b)} בכנסת 25</div></div>`;
+  const dists=[...new Set(Object.values(HR.REG).map(r=>r[1]))].sort((a,b)=>a.localeCompare(b,"he"));
+  const regOpts=dists.map(d=>{
+    const naf=[...new Set(Object.values(HR.REG).filter(r=>r[1]===d).map(r=>r[0]))].sort((a,b)=>a.localeCompare(b,"he"));
+    return `<optgroup label="מחוז ${esc(d)}"><option value="d|${esc(d)}">כל מחוז ${esc(d)}</option>${naf.map(n=>`<option value="n|${esc(n)}">נפת ${esc(n)}</option>`).join("")}</optgroup>`;}).join("");
+  document.getElementById("hrBody").innerHTML=`
+    <div class="mini-blocs">${card('ש"ס',S)}${card("יהדות התורה",G)}${card("שתיהן יחד",T)}</div>
+    <div class="seg" id="hrSeg" role="radiogroup" aria-label="רמת הפירוט">
+      <button type="button" role="radio" data-v="town" aria-checked="true">לפי יישוב</button>
+      <button type="button" role="radio" data-v="kalpi" aria-checked="false">לפי קלפי</button>
+    </div>
+    <div id="hrNote"></div>
+    <div class="hr-bar">
+      <div><label for="hrSort">סידור לפי</label><select id="hrSort">
+        <option value="t|1">הירידה הגדולה ביותר, ש"ס + יהדות התורה</option>
+        <option value="t|-1">העלייה הגדולה ביותר, ש"ס + יהדות התורה</option>
+        <option value="s|1">הירידה הגדולה ביותר בש"ס</option>
+        <option value="s|-1">העלייה הגדולה ביותר בש"ס</option>
+        <option value="g|1">הירידה הגדולה ביותר ביהדות התורה</option>
+        <option value="g|-1">העלייה הגדולה ביותר ביהדות התורה</option>
+      </select></div>
+      <div><label for="hrShow">להציג</label><select id="hrShow">
+        <option value="all">הכול</option><option value="neg">רק ירידה</option><option value="pos">רק עלייה</option>
+      </select></div>
+      <div><label for="hrReg">אזור</label><select id="hrReg"><option value="">כל הארץ</option>${regOpts}</select></div>
+      <div><label for="hrTown">יישוב</label><input type="search" id="hrTown" list="townList" placeholder="כל היישובים" autocomplete="off"></div>
+      <label class="chk" id="hrOddWrap" hidden><input type="checkbox" id="hrOdd" checked>להסתיר קלפיות שגודלן השתנה ביותר מ-20%</label>
+    </div>
+    <div class="hr-sum" id="hrSum"></div>
+    <div class="tbl-wrap flat" id="hrTable"></div>
+    <button type="button" class="hr-more" id="hrMore" hidden></button>`;
+  const re=()=>{ HR.shown=HR_PAGE; hrRender(); };
+  for(const id of ["hrSort","hrShow","hrReg","hrOdd"]) document.getElementById(id).addEventListener("change",re);
+  document.getElementById("hrTown").addEventListener("input",re);
+  document.getElementById("hrSeg").addEventListener("click",e=>{const b=e.target.closest("button"); if(b){ HR.view=b.dataset.v; re(); }});
+  document.getElementById("hrMore").addEventListener("click",()=>{ HR.shown+=HR_PAGE; hrRender(); });
+  document.getElementById("hrTable").addEventListener("click",e=>{
+    const b=e.target.closest("[data-open]"); if(!b) return;
+    if(b.dataset.k) hrOpenKalpi(b.dataset.code,b.dataset.k); else hrOpenTown(b.dataset.code);
+  });
+}
+
+const hrGap=d=>`<span class="gap ${d>0?"up":d<0?"down":"zero"}"><bdi dir="ltr">${d>0?"+":d<0?"−":""}${fmt(Math.abs(d))}</bdi></span>`;
+const hrRegion=c=>{const r=HR.REG[c]; return r?(r[0]===r[1]?`מחוז ${r[1]}`:`נפת ${r[0]} · מחוז ${r[1]}`):"";};
+
+function hrRender(){
+  const kalpiView=HR.view==="kalpi";
+  for(const b of document.querySelectorAll("#hrSeg button")) b.setAttribute("aria-checked",b.dataset.v===HR.view);
+  document.getElementById("hrOddWrap").hidden=!kalpiView;
+  const K=HR.K26P;
+  document.getElementById("hrNote").innerHTML=!kalpiView
+    ?`<p class="tbl-note" style="margin:0">לפי התוצאות הסופיות בכל יישוב. מעטפות חיצוניות (חיילים, נציגויות, בתי חולים ועוד) לא משויכות ליישוב ולכן לא נכללות כאן.</p>`
+    :!K||!K.available?`<div class="hr-warn">קובץ הקלפיות של כנסת 26 עוד לא הועלה, ולכן אין השוואה לפי קלפי.</div>`
+    :`<div class="hr-warn">לפי קובץ הקלפיות שהועלה ב-${new Date(K.uploaded).toLocaleString("he-IL",{timeZone:"Asia/Jerusalem",day:"numeric",month:"numeric",hour:"2-digit",minute:"2-digit"})} (${esc(K.file)}). אם הקובץ הזה לא סופי, חלק מהקלפיות חסרות או חלקיות.
+      מספור הקלפיות השתנה מאוד מאז כנסת 25: רק ל-${fmt(HR.rows.kalpi.length)} מתוך ${fmt(HR.k26n)} קלפיות יש קלפי עם אותו מספר באותו יישוב, ולכן ההשוואה היא רק ביניהן. גם קלפי עם אותו מספר יכולה להיות במקום אחר.</div>`;
+
+  const [m,dir]=document.getElementById("hrSort").value.split("|"), key={t:"dt",s:"ds",g:"dg"}[m];
+  const show=document.getElementById("hrShow").value, reg=document.getElementById("hrReg").value;
+  const tq=document.getElementById("hrTown").value.trim(), tcode=tq?codeFromInput(tq):null;
+  const hideOdd=kalpiView&&document.getElementById("hrOdd").checked;
+  let rows=HR.rows[HR.view].filter(r=>{
+    if(show==="neg"&&r[key]>=0) return false;
+    if(show==="pos"&&r[key]<=0) return false;
+    if(tq&&r.code!==tcode) return false;
+    if(reg){ const [t,v]=reg.split("|"), rr=HR.REG[r.code]; if(!rr||rr[t==="d"?1:0]!==v) return false; }
+    if(hideOdd&&r.odd) return false;
+    return true;
+  }).sort((a,b)=>dir*(a[key]-b[key]));
+
+  const down=rows.reduce((s,r)=>s+Math.min(0,r[key]),0), up=rows.reduce((s,r)=>s+Math.max(0,r[key]),0);
+  const what={t:'ש"ס ויהדות התורה יחד',s:'ש"ס',g:"יהדות התורה"}[m], unit=kalpiView?"קלפיות":"יישובים";
+  document.getElementById("hrSum").innerHTML=rows.length
+    ?`<b class="num">${fmt(rows.length)}</b> ${unit} · ${what}: ירידה של <b class="num">${fmt(-down)}</b> קולות ועלייה של <b class="num">${fmt(up)}</b> קולות בסך הכול`
+    :`אין ${unit} שמתאימים לבחירה.`;
+
+  const cell=(a,b,d)=>`<td class="gs v26 num">${fmt(a)}</td><td class="v25 num">${fmt(b)}</td><td class="num">${hrGap(d)}</td>`;
+  let html=`<table><thead><tr><th rowspan="2" class="name">יישוב</th>${kalpiView?'<th rowspan="2" class="gs">קלפי</th>':""}
+    <th class="grp gs" colspan="3">ש"ס</th><th class="grp gs" colspan="3">יהדות התורה</th><th rowspan="2" class="gs">שינוי<br>בשתיהן יחד</th></tr>
+    <tr>${'<th class="gs">כנסת 26</th><th>כנסת 25</th><th>שינוי</th>'.repeat(2)}</tr></thead><tbody>`;
+  for(const r of rows.slice(0,HR.shown)){
+    const nm=esc(townName(r.code));
+    html+=`<tr><td class="name">${kalpiView?nm:`<button type="button" class="citybtn" data-open="1" data-code="${r.code}">${nm}</button>`}<small class="tsub">${esc(hrRegion(r.code))}</small></td>
+      ${kalpiView?`<td class="gs num"><button type="button" class="citybtn" data-open="1" data-code="${r.code}" data-k="${esc(r.k)}">קלפי ${esc(r.k)}</button>
+        <small class="tsub${r.odd?" warn":""}">${r.odd?`בעלי זכות: ${fmt(r.b26)} מול ${fmt(r.b25)}`:`ברזל ${r.bar}`}</small></td>`:""}
+      ${cell(r.s26,r.s25,r.ds)}${cell(r.g26,r.g25,r.dg)}<td class="gs num">${hrGap(r.dt)}</td></tr>`;
+  }
+  document.getElementById("hrTable").innerHTML=html+"</tbody></table>";
+  const more=document.getElementById("hrMore"), left=rows.length-HR.shown;
+  more.hidden=left<=0; more.textContent=`הצגת עוד ${fmt(Math.min(HR_PAGE,left))} (נשארו ${fmt(left)})`;
+}
+
+async function hrOpenKalpi(code,k){
+  selectTab("kalpi"); history.replaceState(null,"","#kalpi");
+  document.getElementById("kTown").value=townName(code);
+  await onKalpiTown(); document.getElementById("kNum").value=k; await showKalpi(code,k);
+  document.getElementById("kalpi").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function hrOpenTown(code){
+  selectTab("cities"); history.replaceState(null,"","#cities");
+  cityCode=code; document.getElementById("cityInput").value=townName(code); renderCityDetail();
+  document.getElementById("cities").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
 // ---------- בוא נקים ממשלה ----------
 // סדר הח"כים ב-data/mks.json קבוע: הקישור לממשלה הוא מפת סיביות לפי המיקום ברשימה הזאת
 const GOV_COLORS = {"מחל":"#1F5AA5","דרך":"#2b8fd6","רק":"#2a2a78","ודם":"#04939f","אמת":"#2535D8","עם":"#297C32","ל":"#4f8fbd","ב":"#d9401a","ג":"#122D70","שס":"#3a3a3a","ט":"#083D7B"};
@@ -1283,9 +1454,11 @@ document.getElementById("govReset").addEventListener("click",()=>{
 
 function selectTab(name){
   if(name==="gov") govInit();
+  if(name==="haredi") hrInit();
   for(const b of document.querySelectorAll(".tabs [role=tab]")){
     const on=b.dataset.tab===name; b.setAttribute("aria-selected",on); b.tabIndex=on?0:-1;
     document.getElementById(b.dataset.tab).hidden=!on;
+    if(on) b.scrollIntoView({block:"nearest",inline:"center"});
   }
 }
 document.querySelector(".tabs").addEventListener("click",e=>{const b=e.target.closest("[role=tab]"); if(b){ selectTab(b.dataset.tab); history.replaceState(null,"","#"+b.dataset.tab); }});
@@ -1295,7 +1468,7 @@ document.querySelector(".tabs").addEventListener("keydown",e=>{
   const n=tabs[(i+(e.key==="ArrowLeft"?1:-1)+tabs.length)%tabs.length]; n.focus(); n.click();
 });
 { const h=location.hash.slice(1), q=new URLSearchParams(location.search);
-  if(h==="gov"||(q.get("gov")&&!h)) selectTab("gov"); else if(q.get("kalpi")||h==="kalpi") selectTab("kalpi"); else if(q.get("city")||h==="cities") selectTab("cities"); else if(h==="k24") selectTab("k24"); else if(q.get("wi")||h==="whatif") selectTab("whatif"); }
+  if(h==="haredi") selectTab("haredi"); else if(h==="gov"||(q.get("gov")&&!h)) selectTab("gov"); else if(q.get("kalpi")||h==="kalpi") selectTab("kalpi"); else if(q.get("city")||h==="cities") selectTab("cities"); else if(h==="k24") selectTab("k24"); else if(q.get("wi")||h==="whatif") selectTab("whatif"); }
 
 async function initPlaces(){
   try{ T25=await getJson("data/t25.json"); renderCities(); }catch(e){}
