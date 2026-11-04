@@ -292,6 +292,12 @@ main.inner{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;padding-blo
 
 footer{color:var(--muted);font-size:13px;line-height:1.75;display:grid;gap:4px}
 footer a{color:inherit}
+.top-side{display:grid;gap:10px;justify-items:end}
+.maker{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--on-night-mute)}
+.maker img{display:block;height:52px;width:auto;background:#fff;border-radius:8px;padding:3px 8px;box-sizing:content-box}
+.maker-foot{display:grid;justify-items:center;gap:8px;margin-top:22px;padding-top:22px;border-top:1px solid var(--line);font-size:14px;font-weight:700;color:var(--muted)}
+.maker-foot img{display:block;width:150px;height:auto;background:#fff;border-radius:12px;padding:10px 14px;box-sizing:content-box}
+@media (max-width:760px){.top-side{justify-items:start}}
 
 @media (max-width:760px){
   .chambers{grid-template-columns:1fr}
@@ -314,11 +320,14 @@ footer a{color:inherit}
         <div class="kicker">ליל הבחירות · 27 באוקטובר 2026</div>
         <h1>כנסת 26 <em>מול</em> כנסת 25</h1>
       </div>
+      <div class="top-side">
       <div class="chips">
         <span class="chip" id="live"><span class="dot"></span><span id="liveTxt">טוען נתונים…</span></span>
         <span class="chip num" id="counted">—</span>
         <span class="chip num" id="viewers" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg><span id="viewersTxt"></span></span>
         <button type="button" class="chip share" id="shareBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span id="shareTxt">שיתוף</span></button>
+      </div>
+      <div class="maker"><span>מערכת זו הוקמה ע"י</span><img src="data/brand/motiv-horizontal.png" alt="MOTIV · מוטיב פתרונות תוכנה" width="112" height="42"></div>
       </div>
     </div>
     <div class="count-bar" title="אחוז הקלפיות שנספרו"><i id="bar"></i></div>
@@ -482,6 +491,7 @@ footer a{color:inherit}
     <div id="foot"></div>
     <div>מקור כנסת 26: תוצאות <a href="https://votes26.bechirot.gov.il/nationalresults?lang=he" target="_blank" rel="noopener">ועדת הבחירות המרכזית</a>, דרך <a href="https://github.com/navonyaniv/election-il-2026" target="_blank" rel="noopener">קובץ הנתונים הפתוח election-il-2026</a>, ולצידו עותק של <a href="https://elections.govmap.gov.il/" target="_blank" rel="noopener">GovMap</a>, מפת הבחירות הממשלתית. הדף מציג תמיד את העדכני מביניהם. מקור כנסת 25: תוצאות הקלפיות הרשמיות.</div>
     <div>המנדטים של כנסת 26 מחושבים בדף לפי שיטת בדר-עופר, אחוז חסימה 3.25% והסכמי העודפים שפורסמו. התוצאות הרשמיות הן אלה שמתפרסמות ברשומות.</div>
+    <div class="maker-foot"><span>מערכת זו הוקמה ע"י</span><img src="data/brand/motiv-vertical.png" alt="MOTIV · מוטיב פתרונות תוכנה" width="150" height="176" loading="lazy"></div>
   </footer>
 </main>
 
